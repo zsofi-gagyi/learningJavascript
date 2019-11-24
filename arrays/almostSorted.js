@@ -11,7 +11,7 @@ function almostSorted(arr) {
     let firstDifferent;
     let lastDifferent;
 
-    for (let index = 0; index < arr.length; index++) {
+    for (let index in arr) {
         let item = arr[index];
 
         if (sorted[index] !== item) {
@@ -41,7 +41,7 @@ function almostSorted(arr) {
     }
 
     console.log("yes");
-    const toModify = (firstDifferent + 1) + " " + (lastDifferent + 1);
+    const toModify = firstDifferent++ + " " + lastDifferent++ ;
 
     if (lastDifferent - firstDifferent === 1 || differentAreasNumber > 1) {
         console.log("swap " + toModify);
