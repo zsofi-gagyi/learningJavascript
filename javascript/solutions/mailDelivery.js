@@ -240,7 +240,9 @@ function findNextLocation(map, currentLocation) {
         return { location: place, distanceUntilATarget: distanceUntilATarget(place, 0) };
     });
 
-    let neighbourToChose = possibleSteps.reduce((a, b) => a.distanceUntilATarget > b.distanceUntilATarget ? b : a).location;
+    let neighbourToChose = possibleSteps.reduce((a, b) =>
+        a.distanceUntilATarget > b.distanceUntilATarget ? b : a).location;
+
     return map.filter(location => location.name === neighbourToChose.name)[0];
 }
 
