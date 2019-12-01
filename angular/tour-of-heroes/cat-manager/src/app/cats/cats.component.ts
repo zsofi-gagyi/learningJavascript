@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cat } from '../cat';
+import { CatService } from '../cat.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-cats',
@@ -10,20 +12,17 @@ export class CatsComponent implements OnInit {
     cats: Array<Cat>;
     favouriteCat: Cat;
 
-    constructor() {
-        this.favouriteCat = new Cat("darling", "orange-brown striped");
-        this.cats = new Array<Cat>();
-        this.cats.push(this.favouriteCat);
-
-        this.cats.push(new Cat("fluffy", "long gray"));
-        this.cats.push(new Cat("void", "shiny black"));
+    constructor(private catService: CatService,
+                public messageService: MessageService) { // do not write out as field
     }
 
     makeFavourite(cat: Cat) {
         this.favouriteCat = cat;
+        this.messageService.add('CatsComponent: the cat "' + cat.name + '" chosen as favourite');
     }
 
-
     ngOnInit() {
+        let observableOfGettingTheList = this.catService.getCats();
+        observableOfGettingTheList.subscribe(catsList => this.cats = catsList);
     }
 }

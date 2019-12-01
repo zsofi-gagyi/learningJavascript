@@ -1,7 +1,6 @@
-p {
-  font-weight: bold;
+/*things not specified will be defined by the APP css*/
+* {
   color: darkgreen;
-  font-size: 20px;
 }
 
 th, td {
@@ -19,4 +18,8 @@ table {
 
 .cat:active {
   background-color: yellow;
+}
+
+tr.selected, tr.selected input {
+  font-weight: bold;
 }

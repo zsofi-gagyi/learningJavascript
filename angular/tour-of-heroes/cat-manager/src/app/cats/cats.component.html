@@ -1,17 +1,27 @@
-<p>A list of all cats (click on them to make them favourite):</p>
-<table>
-  <tr>
-    <th>id</th>
-    <th>name</th>
-    <th>fur</th>
-  </tr>
-  <tr class="cat" *ngFor="let cat of cats" (click)="makeFavourite(cat)">
-    <td>{{cat.id}}</td>
-    <td>{{cat.name}}</td>
-    <td>{{cat.fur}}</td>
-  </tr>
-</table>
-
-<p>
-  Favourite cat: {{favouriteCat.name | uppercase}}, with {{favouriteCat.fur}} fur.
-</p>
+<div class="area">
+  <h2>
+    A list of all cats
+  </h2>
+  <p>
+    You can edit their names, and by clicking on their row,
+    you can make them the app's favourite cat:
+  </p>
+  <table>
+    <tr>
+      <th>id</th>
+      <th>name</th>
+      <th>fur</th>
+    </tr>
+    <tr class="cat" [class.selected]="cat === favouriteCat"
+        *ngFor="let cat of cats" (click)="makeFavourite(cat)">
+      <td>{{cat.id}}</td>
+      <td>
+        <input [(ngModel)]="cat.name" placeholder="cat.name" />
+      </td>
+      <td>{{cat.fur}}</td>
+    </tr>
+  </table>
+</div>
+<div class="area">
+  <app-cat-detail [cat]="favouriteCat"></app-cat-detail>
+</div>

@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background-color: lightgrey;
+  color: #369;
+  font-size: 45px;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+h3 {
+  font-size: 35px;
+}
+body {
+  margin: 0;
+}
+
+body, input[type="text"], button {
+  font-family: Cambria, Georgia;
+}
+
+
+header, footer {
+  text-align: center;
+  background-color: lightgrey;
+}
+
+footer {
+  position: absolute;
+  height: 55px;
+  width: 100%;
+}
+
+  footer p {
+    margin: 5px;
+    color: darkslategrey;
+  }
+
+p {
+  font-size: 16px;
+  color: red; 
+}
+
+.area {
+  border: solid 1px grey;
+  padding: 15px;
+  margin: 10px;
+}
+
+.area h2 {
+  margin-top: 0px;
+  font-size: 25px;
+}

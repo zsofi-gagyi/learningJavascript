@@ -1,36 +1,11 @@
-/* basic styles copied directly from the tutorial*/
-/* Application-wide Styles */
+/* component-wide Styles */
 * {
-  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  /*overrides the general styles.css*/
 }
 
-header { 
-  color: #369;
-  font-size: 45px;
-}
-
-h2 {
-  font-size: 40px;
-}
-
-h3 {
-  font-size: 35px;
-}
-
-h2, h3 {
-  color: #444;
-  font-weight: lighter;
-}
-
-body {
-  margin: 2em;
-}
-
-body, input[type="text"], button {
-  color: #333;
-  font-family: Cambria, Georgia;
-}
-
-p {
-  font-size: 20px;
+#middle {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
 }
