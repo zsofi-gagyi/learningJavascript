@@ -7,13 +7,17 @@ import { CatsComponent } from './cats/cats.component';
 import { CatDetailComponent } from './cat-detail/cat-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { FavouriteComponent } from './favourite/favourite.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CatsComponent,
     CatDetailComponent,
-    MessagesComponent
+    MessagesComponent,
+    DashboardComponent,
+    FavouriteComponent
   ],
   imports: [
       BrowserModule,

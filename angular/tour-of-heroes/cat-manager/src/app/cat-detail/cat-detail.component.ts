@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Cat } from '../cat';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { CatService } from '../cat.service';
 
 @Component({
   selector: 'app-cat-detail',
@@ -9,11 +12,22 @@ import { Cat } from '../cat';
 
 
 export class CatDetailComponent implements OnInit {
+    cat: Cat;
 
-  @Input() cat: Cat; // one-way binding
-  constructor() { }
+    constructor(
+        private route: ActivatedRoute,
+        private catService: CatService,
+        private location: Location
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit(): void {
+        this.getCat();
+    }
+
+    getCat(): void {
+        const id = +this.route.snapshot.paramMap.get('id');
+        this.catService.getCat(id)
+            .subscribe(obtainedCat => this.cat = obtainedCat);
+    }
 
 }

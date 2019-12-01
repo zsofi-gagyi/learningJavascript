@@ -1,12 +1,9 @@
-<h2>The app's favourite cat:</h2>
-<p *ngIf="cat;else chooseACat">
-  <strong>{{cat.name | uppercase}}</strong>
-  , with
-  <strong>{{cat.fur}}</strong>
-    fur.
-</p>
-<ng-template #chooseACat>
-  <p>
-    Which cat is your favourite? Click on its row!
-  </p>
-</ng-template>
+<div class="area">
+  <h2>Details:</h2>
+    id:
+    <strong>{{cat.id}}</strong>
+    name:
+    <strong>{{cat.name | uppercase}}</strong>
+    fur:
+    <strong>{{cat.fur}}</strong>
+</div>

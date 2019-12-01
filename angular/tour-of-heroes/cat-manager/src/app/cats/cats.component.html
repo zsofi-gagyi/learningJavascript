@@ -8,20 +8,17 @@
   </p>
   <table>
     <tr>
-      <th>id</th>
       <th>name</th>
-      <th>fur</th>
+      <th></th>
     </tr>
     <tr class="cat" [class.selected]="cat === favouriteCat"
         *ngFor="let cat of cats" (click)="makeFavourite(cat)">
-      <td>{{cat.id}}</td>
       <td>
         <input [(ngModel)]="cat.name" placeholder="cat.name" />
       </td>
-      <td>{{cat.fur}}</td>
+      <td>
+        <a routerLink="/detail/{{cat.id}}">details</a>
+      </td>
     </tr>
   </table>
-</div>
-<div class="area">
-  <app-cat-detail [cat]="favouriteCat"></app-cat-detail>
 </div>

@@ -15,4 +15,9 @@ export class CatService {
         this.messageService.add('CatService: fetched cats');
         return of(CATS);
     }
+
+    getCat(id: number): Observable<Cat> {
+        this.messageService.add('CatService: fetched cat with Id' + id);
+        return of(CATS.filter(c => c.id === id)[0]);
+    }
 }

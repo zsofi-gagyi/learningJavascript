@@ -6,7 +6,23 @@
 header {
   background-color: lightgrey;
   color: #369;
-  font-size: 45px;
+  height: 110px;
+}
+
+  header h1 {
+    font-size: 45px;
+    margin: 0;
+    padding: 5px;
+    color: darkslateblue;
+  }
+
+nav {
+  font-size: 30px;
+  height: 30px;
+}
+
+nav a {
+  margin: 0 30px;
 }
 
 h2 {
@@ -24,13 +40,13 @@ body, input[type="text"], button {
   font-family: Cambria, Georgia;
 }
 
-
 header, footer {
   text-align: center;
   background-color: lightgrey;
 }
 
 footer {
+  bottom: 0;
   position: absolute;
   height: 55px;
   width: 100%;

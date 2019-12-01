@@ -1,9 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<header>
-    Welcome to {{ title }}!
-</header>
+  <header>
+    <h1> Welcome to {{ title }}! </h1>
+    <nav>
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/cats">Cats</a>
+    </nav>
+  </header>
 <div id="middle">
-  <app-cats></app-cats>
+  <router-outlet></router-outlet>
   <app-messages></app-messages>
 </div>
 <footer>
