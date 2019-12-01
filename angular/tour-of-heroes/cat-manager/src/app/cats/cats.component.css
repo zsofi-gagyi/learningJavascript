@@ -1,0 +1,22 @@
+p {
+  font-weight: bold;
+  color: darkgreen;
+  font-size: 20px;
+}
+
+th, td {
+  border: solid 1px gray;
+  padding: 3px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.cat:hover {
+  background-color: lightgoldenrodyellow;
+}
+
+.cat:active {
+  background-color: yellow;
+}
