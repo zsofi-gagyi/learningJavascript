@@ -13,11 +13,11 @@ table {
 }
 
 .cat:hover {
-  background-color: lightgoldenrodyellow;
+  background-color: greenyellow;
 }
 
 .cat:active {
-  background-color: yellow;
+  background-color: orange;
 }
 
 tr.selected, tr.selected input {

@@ -2,7 +2,9 @@
   <h2>
     Newest cats
   </h2>
-  <a *ngFor="let cat of cats" class="col-1-4">
+  <a *ngFor="let cat of cats"
+     routerLink="/detail/{{cat.id}}"
+     class="col-1-4">
     <div class="module hero">
       <h4>{{cat.name}}</h4>
     </div>

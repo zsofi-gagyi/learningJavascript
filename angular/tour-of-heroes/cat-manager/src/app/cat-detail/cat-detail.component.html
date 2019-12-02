@@ -1,9 +1,12 @@
 <div class="area">
   <h2>Details:</h2>
+  <span>
     id:
     <strong>{{cat.id}}</strong>
     name:
-    <strong>{{cat.name | uppercase}}</strong>
+    <input [(ngModel)]="cat.name" placeholder="cat.name" />
     fur:
-    <strong>{{cat.fur}}</strong>
+    <input [(ngModel)]="cat.fur" placeholder="cat.fur" />
+  </span>
+  <button (click)="goBack()">go back</button>
 </div>

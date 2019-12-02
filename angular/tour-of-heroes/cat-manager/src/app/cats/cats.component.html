@@ -13,9 +13,7 @@
     </tr>
     <tr class="cat" [class.selected]="cat === favouriteCat"
         *ngFor="let cat of cats" (click)="makeFavourite(cat)">
-      <td>
-        <input [(ngModel)]="cat.name" placeholder="cat.name" />
-      </td>
+      <td>  {{cat.name}}  </td>
       <td>
         <a routerLink="/detail/{{cat.id}}">details</a>
       </td>

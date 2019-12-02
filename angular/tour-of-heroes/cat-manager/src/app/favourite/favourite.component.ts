@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Cat } from '../cat';
+import { CatService } from '../cat.service';
 
 @Component({
     selector: 'favourite',
@@ -8,12 +9,17 @@ import { Cat } from '../cat';
 })
 
 
-export class CatDetailComponent implements OnInit {
+export class FavouriteComponent implements OnInit {
+    fav: Cat;
 
-   // @Input() cat: Cat; // one-way binding
-    constructor() { }
-
-    ngOnInit() {
+    constructor(private catService: CatService) { 
     }
 
+    ngOnInit() {
+        let favId = this.catService.getFavId();
+        if (favId || favId === 0) {
+            this.catService.getCat(favId)
+                .subscribe(obtainedCat => this.fav = obtainedCat);
+        }
+    }
 }

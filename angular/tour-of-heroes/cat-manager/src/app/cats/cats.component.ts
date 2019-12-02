@@ -10,14 +10,13 @@ import { MessageService } from '../message.service';
 })
 export class CatsComponent implements OnInit {
     cats: Array<Cat>;
-    favouriteCat: Cat;
 
     constructor(private catService: CatService,
                 public messageService: MessageService) { // do not write out as field
     }
 
     makeFavourite(cat: Cat) {
-        this.favouriteCat = cat;
+        this.catService.selectAsFavourite(cat.id);
         this.messageService.add('CatsComponent: the cat "' + cat.name + '" chosen as favourite');
     }
 

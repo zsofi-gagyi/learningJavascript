@@ -1,16 +1,16 @@
 <div class="area">
   <h2>The app's favourite cat:</h2>
-  <p *ngIf="cat;else chooseACat">
+  <p *ngIf="fav;else chooseACat">
     id:
-    <strong>{{cat.id}}</strong>
+    <strong>{{fav.id}}</strong>
     name:
-    <strong>{{cat.name | uppercase}}</strong>
+    <strong>{{fav.name | uppercase}}</strong>
     fur:
-    <strong>{{cat.fur}}</strong>
+    <strong>{{fav.fur}}</strong>
   </p>
   <ng-template #chooseACat>
     <p>
-      Which cat is your favourite? Click on its row!
+      Which cat is your favourite? Navigate to "Cats" and click on its row!
     </p>
   </ng-template>
 </div>

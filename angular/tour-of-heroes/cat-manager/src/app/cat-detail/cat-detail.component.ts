@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Cat } from '../cat';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { CatService } from '../cat.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-cat-detail',
@@ -30,4 +30,7 @@ export class CatDetailComponent implements OnInit {
             .subscribe(obtainedCat => this.cat = obtainedCat);
     }
 
+    goBack(): void {
+        this.location.back();
+    }
 }
