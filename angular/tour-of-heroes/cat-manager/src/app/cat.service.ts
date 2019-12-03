@@ -48,6 +48,12 @@ export class CatService {
         return this.http.put(this.catsUrl, cat, this.httpOptions);
     }
 
+    //DELETE
+    delete(id: number): Observable<any>{
+        this.log("deleted cat with Id " + id);
+        return this.http.delete(this.catsUrl + "/" + id);
+    }
+
     //strictly local operation
     selectAsFavourite(id: number) {
         this.log('the cat with Id ' + id + ' was chosen as favourite');

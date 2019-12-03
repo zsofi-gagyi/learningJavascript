@@ -11,6 +11,7 @@
       <th>favourite?</th>
       <th>name</th>
       <th></th>
+      <th></th>
     </tr>
     <tr [class.selected]="cat.id === favouriteId"
         *ngFor="let cat of cats">
@@ -21,6 +22,11 @@
           (click)="makeFavourite(cat)">  {{cat.name}}  </td>
       <td [class.selected]="cat.id === favouriteId">
         <a routerLink="/detail/{{cat.id}}">details</a>
+      </td>
+      <td>
+        <button (click)="delete(cat.id)">
+          delete
+        </button>
       </td>
     </tr>
   </table>

@@ -40,22 +40,10 @@ body, input[type="text"], button {
   font-family: Cambria, Georgia;
 }
 
-header, footer {
+header {
   text-align: center;
   background-color: lightgrey;
 }
-
-footer {
-  bottom: 0;
-  position: absolute;
-  height: 55px;
-  width: 100%;
-}
-
-  footer p {
-    margin: 5px;
-    color: darkslategrey;
-  }
 
 p {
   font-size: 16px;
