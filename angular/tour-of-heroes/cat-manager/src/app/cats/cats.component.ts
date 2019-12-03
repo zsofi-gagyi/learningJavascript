@@ -10,6 +10,7 @@ import { MessageService } from '../message.service';
 })
 export class CatsComponent implements OnInit {
     cats: Array<Cat>;
+    favouriteId: number;
 
     constructor(private catService: CatService,
                 public messageService: MessageService) { // do not write out as field
@@ -17,10 +18,13 @@ export class CatsComponent implements OnInit {
 
     makeFavourite(cat: Cat) {
         this.catService.selectAsFavourite(cat.id);
+        this.favouriteId = this.catService.getFavId();
     }
 
     ngOnInit() {
         let observableOfGettingTheList = this.catService.getCats();
         observableOfGettingTheList.subscribe(catsList => this.cats = catsList);
+
+        this.favouriteId = this.catService.getFavId();
     }
 }

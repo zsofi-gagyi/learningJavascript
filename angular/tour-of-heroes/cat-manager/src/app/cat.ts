@@ -1,5 +1,4 @@
 export class Cat {
-    static idCounter: number = 0;
 
     id: number;
     name: string;
@@ -8,6 +7,6 @@ export class Cat {
     constructor(name: string, fur: string) {
         this.name = name;
         this.fur = fur;
-        this.id = Cat.idCounter++;
+        this.id = 0;
     }
 }

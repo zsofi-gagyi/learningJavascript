@@ -13,14 +13,14 @@ table {
   width: 50%;
 }
 
-.cat:hover {
+.catName:hover {
   background-color: greenyellow;
 }
 
-.cat:active {
+.catName:active {
   background-color: orange;
 }
 
-tr.selected, tr.selected input {
+td.selected, td.selected a {
   font-weight: bold;
 }

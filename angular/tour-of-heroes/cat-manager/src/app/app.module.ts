@@ -10,6 +10,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FavouriteComponent } from './favourite/favourite.component';
+import { CreateNewComponent } from './create-new/create-new.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FavouriteComponent } from './favourite/favourite.component';
     CatDetailComponent,
     MessagesComponent,
     DashboardComponent,
-    FavouriteComponent
+    FavouriteComponent,
+    CreateNewComponent
   ],
   imports: [
       BrowserModule,

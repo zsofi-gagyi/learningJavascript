@@ -1,0 +1,9 @@
+<div class="area">
+  <h2>Add a new cat to our database:</h2>
+  <p>Name: </p>
+  <input #name />
+  <p>Fur: </p>
+  <input #fur />
+  <br />
+  <button (click)="createCat(name.value, fur.value)">Save and see it on the list at Cats</button>
+</div>

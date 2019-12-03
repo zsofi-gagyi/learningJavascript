@@ -3,18 +3,23 @@
     A list of all cats
   </h2>
   <p>
-    You can edit their names, and by clicking on their row,
+    You can edit their names, and by clicking on their name,
     you can make them the app's favourite cat:
   </p>
   <table>
     <tr>
+      <th>favourite?</th>
       <th>name</th>
       <th></th>
     </tr>
-    <tr class="cat" [class.selected]="cat === favouriteCat"
-        *ngFor="let cat of cats" (click)="makeFavourite(cat)">
-      <td>  {{cat.name}}  </td>
+    <tr [class.selected]="cat.id === favouriteId"
+        *ngFor="let cat of cats">
       <td>
+        <p *ngIf="cat.id === favouriteId">YES</p>
+      </td>
+      <td class="catName" [class.selected]="cat.id === favouriteId"
+          (click)="makeFavourite(cat)">  {{cat.name}}  </td>
+      <td [class.selected]="cat.id === favouriteId">
         <a routerLink="/detail/{{cat.id}}">details</a>
       </td>
     </tr>

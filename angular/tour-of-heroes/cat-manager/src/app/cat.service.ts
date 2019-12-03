@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Cat } from './cat';
-import { CATS } from './mock-cats';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 
@@ -37,9 +36,10 @@ export class CatService {
     }
 
     //POST
-    postCat(name: string, fur: string): void {
-        const body = { name: name, fur: fur };
-        this.http.post(this.catsUrl, body, this.httpOptions);
+    postCat(name: string, fur: string): Observable<any> {
+        this.log("saved cat with name: " + name + " and fur: " + fur);
+        const newCat = new Cat(name, fur);
+        return this.http.post(this.catsUrl, newCat, this.httpOptions);
     }
 
     //PUT
@@ -48,11 +48,13 @@ export class CatService {
         return this.http.put(this.catsUrl, cat, this.httpOptions);
     }
 
+    //strictly local operation
     selectAsFavourite(id: number) {
         this.log('the cat with Id ' + id + ' was chosen as favourite');
         this.favId = id;
     }
 
+    //strictly local operation
     getFavId() {
         return this.favId;
     }
