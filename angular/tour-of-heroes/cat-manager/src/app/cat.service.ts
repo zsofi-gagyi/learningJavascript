@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Cat } from './cat';
+import { CatWithoutId } from './catWithoutId';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 
@@ -38,7 +39,7 @@ export class CatService {
     //POST
     postCat(name: string, fur: string): Observable<any> {
         this.log("saved cat with name: " + name + " and fur: " + fur);
-        const newCat = new Cat(name, fur);
+        const newCat = new CatWithoutId(name, fur);
         return this.http.post(this.catsUrl, newCat, this.httpOptions);
     }
 

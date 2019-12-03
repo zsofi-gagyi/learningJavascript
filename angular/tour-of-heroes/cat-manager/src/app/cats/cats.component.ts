@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cat } from '../cat';
 import { CatService } from '../cat.service';
-import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-cats',
@@ -12,8 +11,7 @@ export class CatsComponent implements OnInit {
     cats: Array<Cat>;
     favouriteId: number;
 
-    constructor(private catService: CatService,
-                public messageService: MessageService) { // do not write out as field
+    constructor(private catService: CatService) { // do not write out as field
     }
 
     makeFavourite(cat: Cat) {

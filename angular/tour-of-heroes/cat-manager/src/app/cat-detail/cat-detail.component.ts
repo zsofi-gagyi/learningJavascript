@@ -18,13 +18,14 @@ export class CatDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private catService: CatService,
         private location: Location
-    ) { }
-
-    ngOnInit(): void {
-        this.getCat();
+    )
+    {
+        this.cat = { id: 0, name: "", fur: "" };
+        //placeholder until the subscribed information
+        //returns, to avoid errors.
     }
 
-    getCat(): void {
+    ngOnInit(): void {
         const id = +this.route.snapshot.paramMap.get('id');
         this.catService.getCat(id)
             .subscribe(obtainedCat => this.cat = obtainedCat);

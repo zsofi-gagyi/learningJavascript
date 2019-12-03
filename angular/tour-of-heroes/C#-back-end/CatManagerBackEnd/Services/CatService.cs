@@ -42,5 +42,11 @@ namespace CatManagerBackEnd.Services
             oldCat.name = updatedCat.name;
             oldCat.fur = updatedCat.fur;
         }
+
+        public void delete(int id)
+        {
+            var cat = _catList.Where(c => c.id == id).FirstOrDefault();
+            _catList.Remove(cat);
+        }
     }
 }

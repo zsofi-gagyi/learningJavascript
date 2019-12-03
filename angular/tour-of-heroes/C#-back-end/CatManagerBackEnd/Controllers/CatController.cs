@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CatManagerBackEnd.Models;
+﻿using CatManagerBackEnd.Models;
 using CatManagerBackEnd.Services;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CatManagerBackEnd.Controllers
 {
@@ -33,9 +29,9 @@ namespace CatManagerBackEnd.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string name, string fur)
+        public void Post([FromBody] CatWithoutId cat)
         {
-            _catService.saveCat(name, fur);
+            _catService.saveCat(cat.name, cat.fur);
         }
 
         [HttpPut]
@@ -44,10 +40,10 @@ namespace CatManagerBackEnd.Controllers
             _catService.updateCat(cat);
         }
 
-        // DELETE api/cats/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _catService.delete(id);
         }
     }
 }

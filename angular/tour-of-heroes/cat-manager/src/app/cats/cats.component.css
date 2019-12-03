@@ -1,7 +1,4 @@
 /*things not specified will be defined by the APP css*/
-* {
-  color: darkgreen;
-}
 
 th, td {
   border: solid 1px gray;

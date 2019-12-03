@@ -1,9 +1,3 @@
-/* component-wide Styles */
-* {
-  color: black;
-  /*overrides the general styles.css*/
-}
-
 #middle {
   width: 70%;
   margin-left: auto;

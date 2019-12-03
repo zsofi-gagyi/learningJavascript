@@ -18,9 +18,13 @@ export class DashboardComponent implements OnInit {
 
     getCats(): void {
         this.catService.getCats()
-            .subscribe(cats => {
-                let catsNr = cats.length;
-                this.cats = cats.slice(catsNr - 4);
+            .subscribe(allCats => {
+                let catsNr = allCats.length;
+                if (catsNr > 4) {
+                    this.cats = allCats.slice(catsNr - 4);
+                } else {
+                    this.cats = allCats;
+                }
             });
     }
 }
