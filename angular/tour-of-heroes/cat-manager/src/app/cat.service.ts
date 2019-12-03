@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Cat } from './cat';
 import { CatWithoutId } from './catWithoutId';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -26,33 +28,53 @@ export class CatService {
 
     //GET ALL
     getCats(): Observable<Cat[]> {
-        this.log("fetched cats");
-        return this.http.get<Cat[]>(this.catsUrl + "/all");
+        return this.http.get<Cat[]>(this.catsUrl + "/all")
+            .pipe(
+                tap(_ => this.log('fetched cats')),
+                //do this every time (even when there is a problem)
+                //and let the information itself advance further
+                //down the pipe,
+                catchError(this.handleError<Cat[]>('getCats', []))
+                //catch errors and return a default when relevant,
+                //otherwise return the correct result itself
+        );
     }
 
     //GET ONE
     getCat(id: number): Observable<Cat> {
-        this.log("fetched cat with Id " + id);
-        return this.http.get<Cat>(this.catsUrl + "/" + id);
+        return this.http.get<Cat>(this.catsUrl + "/" + id)
+            .pipe(
+                tap(_ => this.log("fetched cat with Id " + id)),
+                catchError(this.handleError<Cat>('getCat', new Cat("", "")))
+        );
     }
 
     //POST
     postCat(name: string, fur: string): Observable<any> {
-        this.log("saved cat with name: " + name + " and fur: " + fur);
         const newCat = new CatWithoutId(name, fur);
-        return this.http.post(this.catsUrl, newCat, this.httpOptions);
+        return this.http.post(this.catsUrl, newCat, this.httpOptions)
+            .pipe(
+                tap(_ => this.log("saved cat with name: " + name + " and fur: " + fur)),
+                catchError(this.handleError<Cat>('postCat'))
+        );
     }
 
     //PUT
     updateCat(cat: Cat): Observable<any> {
-        this.log("updated cat with Id " + cat.id);
-        return this.http.put(this.catsUrl, cat, this.httpOptions);
+        return this.http.put(this.catsUrl, cat, this.httpOptions)
+            .pipe(
+                tap(_ => this.log("updated cat with Id " + cat.id)),
+                catchError(this.handleError<Cat>('postCat'))
+        );
     }
 
     //DELETE
     delete(id: number): Observable<any>{
-        this.log("deleted cat with Id " + id);
-        return this.http.delete(this.catsUrl + "/" + id);
+        return this.http.delete(this.catsUrl + "/" + id)
+            .pipe(
+                tap(_ => this.log("deleted cat with Id " + id)),
+                catchError(this.handleError<Cat>('deleteCat'))
+            );
     }
 
     //strictly local operation
@@ -68,5 +90,26 @@ export class CatService {
 
     log(message: string) {
         this.messageService.add("CatService: " + message);
+    }
+
+    /**
+     * AS COPIED FROM THE TUTORIAL
+    * Handle Http operation that failed.
+    * Let the app continue.
+    * @param operation - name of the operation that failed
+    * @param result - optional value to return as the observable result
+    */
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+
+            // TODO: better job of transforming error for user consumption
+            this.log(`${operation} failed: ${error.message}`);
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
     }
 }

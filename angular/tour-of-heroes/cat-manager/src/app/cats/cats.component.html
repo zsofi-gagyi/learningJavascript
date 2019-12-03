@@ -3,8 +3,8 @@
     A list of all cats
   </h2>
   <p>
-    You can edit their names, and by clicking on their name,
-    you can make them the app's favourite cat:
+    By clicking on their name,
+    you can mark them as your favourite.
   </p>
   <table>
     <tr>
@@ -16,7 +16,7 @@
     <tr [class.selected]="cat.id === favouriteId"
         *ngFor="let cat of cats">
       <td>
-        <p *ngIf="cat.id === favouriteId">YES</p>
+        <p class="emoji" *ngIf="cat.id === favouriteId">👑 🐈</p>
       </td>
       <td class="catName" [class.selected]="cat.id === favouriteId"
           (click)="makeFavourite(cat)">  {{cat.name}}  </td>
