@@ -30,6 +30,11 @@ export class CatDetailComponent implements OnInit {
             .subscribe(obtainedCat => this.cat = obtainedCat);
     }
 
+    updateCat(cat: Cat): void {
+        this.catService.updateCat(cat)
+            .subscribe(() => this.goBack());
+    }
+
     goBack(): void {
         this.location.back();
     }

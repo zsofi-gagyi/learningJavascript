@@ -10,6 +10,7 @@ th, td {
 
 table {
   border-collapse: collapse;
+  width: 50%;
 }
 
 .cat:hover {

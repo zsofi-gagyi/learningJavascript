@@ -17,7 +17,6 @@ export class CatsComponent implements OnInit {
 
     makeFavourite(cat: Cat) {
         this.catService.selectAsFavourite(cat.id);
-        this.messageService.add('CatsComponent: the cat "' + cat.name + '" chosen as favourite');
     }
 
     ngOnInit() {

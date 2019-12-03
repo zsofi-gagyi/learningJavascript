@@ -1,13 +1,16 @@
 <div class="area">
-  <h2>The app's favourite cat:</h2>
+  <h2>Your favourite cat:</h2>
   <p *ngIf="fav;else chooseACat">
     id:
-    <strong>{{fav.id}}</strong>
+    <strong>{{fav.id}}</strong>, 
     name:
-    <strong>{{fav.name | uppercase}}</strong>
+    <strong>{{fav.name | uppercase}}</strong>, 
     fur:
     <strong>{{fav.fur}}</strong>
   </p>
+  <p>Note: having a favourite cat is user- and session-specific [happens only in the
+  browser]. If you want to send someone a link showing your favourite cat, use the
+  cat's "details" page instead.</p>
   <ng-template #chooseACat>
     <p>
       Which cat is your favourite? Navigate to "Cats" and click on its row!

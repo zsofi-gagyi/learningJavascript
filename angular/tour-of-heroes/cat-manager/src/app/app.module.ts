@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // <-- NgModel (the live updating binder) lives here
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CatsComponent } from './cats/cats.component';
@@ -22,7 +23,8 @@ import { FavouriteComponent } from './favourite/favourite.component';
   imports: [
       BrowserModule,
       FormsModule,
-      AppRoutingModule
+      AppRoutingModule,
+      HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
