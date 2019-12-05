@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  font-family: "Lucida Console";
+}
+
+.toCenterHorizontally {
+  text-align: center;
+}
+
+.subtitle {
+  font-weight: normal;
+  font-size: 23px;
+}
+
+.gameArea {
+  height: 600px;
+  width: 1000px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid red;
+}

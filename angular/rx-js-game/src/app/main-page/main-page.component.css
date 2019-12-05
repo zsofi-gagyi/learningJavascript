@@ -1,0 +1,25 @@
+ul {
+  margin-top: 50px;
+  list-style-type: none;
+}
+
+li {
+  margin-top: 50px;
+}
+
+div {
+  margin-top: 30px;
+}
+
+h3 {
+  margin-bottom: 0;
+}
+
+p {
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+.mainDescription {
+  margin-top: 60px;
+}
