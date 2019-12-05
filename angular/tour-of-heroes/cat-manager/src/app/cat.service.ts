@@ -28,6 +28,8 @@ export class CatService {
 
     //GET ALL
     getCats(): Observable<Cat[]> {
+        //a STREAM of results, but in this case, it will be a stream of 1 array
+        //for a real stream, the backend would need to really do send them one by one
         return this.http.get<Cat[]>(this.catsUrl + "/all")
             .pipe(
                 tap(_ => this.log('fetched cats')),

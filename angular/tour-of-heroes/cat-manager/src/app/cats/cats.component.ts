@@ -21,17 +21,19 @@ export class CatsComponent implements OnInit {
 
     delete(id: number) {
         //delete from the server
+        //without "subscribe", the observable won't happen
+        //[see: forest, if a tree falls without anyone hearing it in]
         this.catService.delete(id).subscribe();
 
-        //delete locally, so we don't need to reload
+        //delete locally, so we don't need to reload the information from the server
         const cat = this.cats.filter(c => c.id === id)[0];
         var index = this.cats.indexOf(cat);
         this.cats.splice(index, 1);
     }
 
     ngOnInit() {
-        let observableOfGettingTheList = this.catService.getCats();
-        observableOfGettingTheList.subscribe(catsList => this.cats = catsList);
+        let observableOfTheList = this.catService.getCats();
+        observableOfTheList.subscribe(catsList => this.cats = catsList);
 
         this.favouriteId = this.catService.getFavId();
     }
