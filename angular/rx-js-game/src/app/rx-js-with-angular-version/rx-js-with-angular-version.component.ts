@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rx-js-with-angular-version.component.css']
 })
 export class RxJsWithAngularVersionComponent implements OnInit {
+  
 
   constructor() { }
 

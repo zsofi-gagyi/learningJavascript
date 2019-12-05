@@ -13,10 +13,23 @@
 }
 
 .gameArea {
-  height: 600px;
-  width: 1000px;
+  background-color: lightgray;
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
-  border: solid red;
+  border: solid black 1px;
+}
+
+.gameArea div {
+  position: absolute;
+}
+
+.block {
+  background-color: blue;
+  height: 20px;
+  width: 30px;
+}
+
+.paddle {
+  background-color: red;
 }

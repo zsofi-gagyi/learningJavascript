@@ -2,6 +2,13 @@
   Currently playing: the pure Angular version.
   <a routerLink="">Back</a>
 </h3>
-<div class="gameArea">
-
+<div class="gameArea"
+     [style.height.px]="gameHeight"
+     [style.width.px]="gameWidth">
+  <p>{{paddle.x}}, {{paddle.y}}</p>
+  <div class="block" style="transform: translate(50px,100px)"></div>
+  <div class="paddle"
+      [style.transform]="'translate(' + paddle.x + 'px,' + paddle.y + 'px)'"
+      [style.height.px]="paddle.height"
+      [style.width.px]="paddle.width"></div>
 </div>
