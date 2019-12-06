@@ -25,9 +25,11 @@
 }
 
 .block {
-  background-color: blue;
-  height: 20px;
-  width: 30px;
+  background-color: maroon;
+}
+
+.ball {
+  background-color: black;
 }
 
 .paddle {

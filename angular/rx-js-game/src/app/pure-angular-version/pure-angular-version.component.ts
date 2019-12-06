@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
+import { Game } from '../game';
+import { GameService } from '../game.service';
 import { Box } from '../box';
 
 @Component({
@@ -8,16 +10,14 @@ import { Box } from '../box';
   styleUrls: ['./pure-angular-version.component.css']
 })
 export class PureAngularVersionComponent implements OnInit {
-    gameWidth: number = 1000;
-    gameHeight: number = 600;
-
+    game: Game;
     paddle: Box;
-    blocks: Box[];
-  
    
-    constructor() {
-        this.paddle = new Box(420, 500, 160, 20);
-        this.blocks = new Array<Box>();
+    constructor(private gameService: GameService) {
+        this.game = new Game();
+        this.paddle = new Box(330, 550, 310, 20);
+
+        this.timeout();
     }
 
     ngOnInit() {
@@ -27,12 +27,24 @@ export class PureAngularVersionComponent implements OnInit {
     keyEvent(event: KeyboardEvent) {
         console.log(event);
 
-        if (event.keyCode === 39 && this.paddle.x < this.gameWidth - this.paddle.width) { // arrow left
-            this.paddle.x += 10;
+        // arrow left
+        if (event.keyCode === 39 && this.paddle.horizontalCoord < this.game.gameWidth - this.paddle.width) { 
+            this.paddle.horizontalCoord += 30;
         }
 
-        if (event.keyCode === 37 && this.paddle.x > 0) { // arrow right
-            this.paddle.x -= 10;
+        // arrow right
+        if (event.keyCode === 37 && this.paddle.horizontalCoord > 0) { 
+            this.paddle.horizontalCoord -= 30;
         }
+    }
+
+    timeout() {
+        setTimeout(() => {
+            this.game = this.gameService.moveBall(this.game, this.paddle);
+
+            if (!this.game.isOver) { 
+              this.timeout();
+            }
+        }, 1000 / 60);
     }
 }

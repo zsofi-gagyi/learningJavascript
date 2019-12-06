@@ -3,12 +3,27 @@
   <a routerLink="">Back</a>
 </h3>
 <div class="gameArea"
-     [style.height.px]="gameHeight"
-     [style.width.px]="gameWidth">
-  <p>{{paddle.x}}, {{paddle.y}}</p>
-  <div class="block" style="transform: translate(50px,100px)"></div>
+     [style.height.px]="game.gameHeight"
+     [style.width.px]="game.gameWidth">
+  <div *ngFor="let block of game.blocks">
+    <div class="block"
+         [style.transform]="'translate(' + block.horizontalCoord + 'px,' + block.verticalCoord + 'px)'"
+         [style.height.px]="block.height"
+         [style.width.px]="block.width">
+
+    </div>
+  </div>
+  <div *ngIf="game.ball">
+    <div class="ball"
+         [style.transform]="'translate(' + game.ball.horizontalCoord + 'px,' + game.ball.verticalCoord + 'px)'"
+         [style.height.px]="game.ball.height"
+         [style.width.px]="game.ball.width">
+    </div>
+  </div>
   <div class="paddle"
-      [style.transform]="'translate(' + paddle.x + 'px,' + paddle.y + 'px)'"
-      [style.height.px]="paddle.height"
-      [style.width.px]="paddle.width"></div>
+       [style.transform]="'translate(' + paddle.horizontalCoord + 'px,' + paddle.verticalCoord + 'px)'"
+       [style.height.px]="paddle.height"
+       [style.width.px]="paddle.width">
+
+  </div>
 </div>
