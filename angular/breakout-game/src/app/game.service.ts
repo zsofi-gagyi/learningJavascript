@@ -12,29 +12,29 @@ export class GameService {
 
     moveBall(game: Game, paddle: Box): Game {
 
-        game.ball.updateCorners();
+        game.ball.updateLimits();
 
-        if (game.ball.corners.lowerLeft.verticalCoord <= paddle.corners.upperLeft.verticalCoord) {
-            paddle.updateCorners();
+        if (game.ball.limits.lower <= paddle.limits.upper) {
+            paddle.updateLimits();
             this.reflectBallFromBox(paddle, game.ball);
         }
 
         let lowestBlockCorner = game.blocks
-            .map(b => b.corners.lowerLeft.verticalCoord)
+            .map(b => b.limits.lower)
             .reduce((a, b) => a > b ? a : b, 0);
 
-        if (lowestBlockCorner >= game.ball.corners.upperLeft.verticalCoord) {
+        if (lowestBlockCorner >= game.ball.limits.upper) {
 
-            let length = game.blocks.length;
-            for (let blockIndex in game.blocks) { // iterating backwards
-                let block = game.blocks[length - parseInt(blockIndex) - 1];
-
+            for (let block of game.blocks) {
                 let touched = this.reflectBallFromBox(block, game.ball);
 
                 if (touched) {
-                    game.blocks = game.blocks.filter(e => e !== block);
+                    block.lives--;
+                    break;
                 }
             }
+
+            game.blocks = game.blocks.filter(e => e.lives);
         }
 
         this.reflectBallFromWallsIfNeeded(game);
@@ -42,11 +42,12 @@ export class GameService {
         game.ball.horizontalCoord += game.ball.horizontalMovement;
         game.ball.verticalCoord += game.ball.verticalMovement;
 
-        game.isOver = (!game.blocks.length || game.ball.verticalCoord > game.gameHeight);
-        //no more blocks to destroy, OR the ball has fallen off the play area
+        if (!game.blocks.length) {
+            game.endingMessage = "You won! :)"
+        }
 
-        if (game.isOver) {
-            game.ball = null;
+        if (game.ball.verticalCoord > game.gameHeight) {
+            game.endingMessage = "Game over :("
         }
 
         return game;
@@ -55,28 +56,28 @@ export class GameService {
     reflectBallFromBox(box: Box, ball: Ball): boolean {
 
         //the RIGHT of the ball is on the same level as the LEFT of the box,      or
-        if ((ball.corners.upperRight.horizontalCoord === box.corners.upperLeft.horizontalCoord ||
+        if ((ball.limits.right === box.limits.left ||
 
             //the LEFT of the ball is on the same level as the RIGHT of the box
-            ball.corners.upperLeft.horizontalCoord === box.corners.upperRight.horizontalCoord) &&
+            ball.limits.left === box.limits.right) &&
 
             //and they are vertically in the right place
-            (ball.corners.lowerRight.verticalCoord <= box.corners.lowerRight.verticalCoord + ball.height &&
-                ball.corners.upperRight.verticalCoord >= box.corners.upperRight.verticalCoord - ball.height)) {
+            (ball.limits.lower <= box.limits.lower + ball.height &&
+                ball.limits.upper >= box.limits.upper - ball.height)) {
 
             ball.horizontalMovement *= -1;
             return true;
         }
 
         //the BOTTOM of the ball is on the same level as the TOP of the box,     or
-        if ((ball.corners.lowerLeft.verticalCoord === box.corners.upperLeft.verticalCoord ||
+        if ((ball.limits.lower === box.limits.upper ||
 
             //the TOP of the ball is on the same level as the BOTTOM of the box,
-            ball.corners.upperLeft.verticalCoord === box.corners.lowerLeft.verticalCoord) &&
+            ball.limits.upper === box.limits.lower) &&
 
             //and they are horizontally in the right place
-            (ball.corners.upperRight.horizontalCoord <= box.corners.upperRight.horizontalCoord + ball.width &&
-                ball.corners.upperLeft.horizontalCoord >= box.corners.upperLeft.horizontalCoord - ball.width)) {
+            (ball.limits.right <= box.limits.right + ball.width &&
+                ball.limits.left >= box.limits.left - ball.width)) {
 
             ball.verticalMovement *= -1;
             return true;

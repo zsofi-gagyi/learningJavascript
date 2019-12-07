@@ -45,7 +45,7 @@ export class PureAngularVersionComponent implements OnInit {
             let start = Date.now();
             this.game = this.gameService.moveBall(this.game, this.paddle);
 
-            if (!this.game.isOver) {
+            if (!this.game.endingMessage) {
                 let end = Date.now();
                 let remainingTime = (1000 / 60) - (end - start);
 

@@ -24,8 +24,8 @@
   position: absolute;
 }
 
-.block {
-  background-color: maroon;
+.ball, .padde, .block{
+  position: absolute;
 }
 
 .ball {

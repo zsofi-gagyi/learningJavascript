@@ -1,4 +1,4 @@
-import { Corners } from './corners';
+import { Limits } from './limits';
 
 export class Box {
 
@@ -6,7 +6,7 @@ export class Box {
     verticalCoord: number;
     width: number;
     height: number;
-    corners: Corners;
+    limits: Limits;
 
 
     constructor(horizontalCoord: number, verticalCoord: number, width: number, height: number) {
@@ -14,10 +14,10 @@ export class Box {
         this.verticalCoord = verticalCoord;
         this.width = width;
         this.height = height;
-        this.corners = new Corners(horizontalCoord, verticalCoord, width, height);
+        this.limits = new Limits(horizontalCoord, verticalCoord, width, height);
     }
 
-    updateCorners(){
-        this.corners = new Corners(this.horizontalCoord, this.verticalCoord, this.width, this.height);
+    updateLimits(){
+        this.limits = new Limits(this.horizontalCoord, this.verticalCoord, this.width, this.height);
     }
 }

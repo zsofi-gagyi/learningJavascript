@@ -1,4 +1,5 @@
 import { Box } from './box';
+import { Block } from './block';
 import { Ball } from './ball';
 
 export class Game {
@@ -6,30 +7,42 @@ export class Game {
     gameWidth: number;
     gameHeight: number;
 
-    blocks: Box[];
+    blocks: Block[];
+    blockLevelsNumber: number;
+    levelColors: string[];
+
     ball: Ball;
-    isOver: boolean;
+    endingMessage: string;
 
     constructor() {
         this.gameWidth = 1000;
         this.gameHeight = 600;
+
+        this.blockLevelsNumber = 3;
+        this.levelColors = ["salmon", "crimson", "darkred"];
         this.blocks = this.createBlocks();
+
         this.ball = new Ball(480, 530, 20, 20, 5, 5);
-        this.isOver = false;
     }
 
-    createBlocks(): Box[] {
-        let blocks = new Array<Box>();
-        let startingHorizontalCoordonate = 25; 
-        let startingVerticalCoordonate = 25; 
+    createBlocks(): Block[] {
+        let blocks = new Array<Block>();
+        let startingHorizontalCoordonate = 10; 
+        let startingVerticalCoordonate = 10; 
 
-        let blockHeight = 30; 
-        let blockWidth = 80; 
+        let blockHeight = 40; 
+        let blockWidth = 155; 
 
-        for (let x = startingHorizontalCoordonate; x < this.gameWidth; x += blockWidth + 65) {
-            for (let y = startingVerticalCoordonate; y < 300; y += blockHeight + 40) {
-                if (y !== 165) {
-                    let newBlock = new Box(x, y, blockWidth, blockHeight);
+        for (let x = startingHorizontalCoordonate; x < this.gameWidth; x += blockWidth + 10) {
+            for (let y = startingVerticalCoordonate; y < 230; y += blockHeight + 10) {
+                if (Math.random() > 0.3) {
+                    let lives = 1;
+                    for (let i = 1; i < this.blockLevelsNumber; i++) {
+                        if (Math.random() > 0.8) {
+                            lives++;
+                        }
+                    }
+                    let newBlock = new Block(x, y, blockWidth, blockHeight, lives);
                     blocks.push(newBlock);
                 }
             }
