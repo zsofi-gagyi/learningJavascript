@@ -20,15 +20,15 @@ export class Game {
 
     createBlocks(): Box[] {
         let blocks = new Array<Box>();
-        let startingHorizontalCoordonate = 10;
-        let startingVerticalCoordonate = 10;
+        let startingHorizontalCoordonate = 25; 
+        let startingVerticalCoordonate = 25; 
 
-        let blockHeight = 50;
-        let blockWidth = 155;
+        let blockHeight = 30; 
+        let blockWidth = 80; 
 
-        for (let x = startingHorizontalCoordonate; x < this.gameWidth; x += blockWidth + 10) {
-            for (let y = startingVerticalCoordonate; y < 250; y += blockHeight + 25) {
-                if (y !== 160) {           // for purely aesthetic / game enjoyment reasons
+        for (let x = startingHorizontalCoordonate; x < this.gameWidth; x += blockWidth + 65) {
+            for (let y = startingVerticalCoordonate; y < 300; y += blockHeight + 40) {
+                if (y !== 165) {
                     let newBlock = new Box(x, y, blockWidth, blockHeight);
                     blocks.push(newBlock);
                 }
@@ -36,5 +36,9 @@ export class Game {
         }
 
         return blocks;
+    }
+
+    createPaddle(): Box {
+        return new Box(330, 550, 310, 20);
     }
 }

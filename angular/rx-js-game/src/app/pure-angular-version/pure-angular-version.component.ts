@@ -15,14 +15,16 @@ export class PureAngularVersionComponent implements OnInit {
    
     constructor(private gameService: GameService) {
         this.game = new Game();
-        this.paddle = new Box(330, 550, 310, 20);
+        this.paddle = this.game.createPaddle(); 
 
-        this.timeout();
+        this.timeout(0);
     }
 
     ngOnInit() {
     }
 
+    //TODO: solve this with checking the key states in the timeout loop instead,
+    //to avoid that initial lag
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
         console.log(event);
@@ -38,13 +40,17 @@ export class PureAngularVersionComponent implements OnInit {
         }
     }
 
-    timeout() {
+    timeout(time: number) {
         setTimeout(() => {
+            let start = Date.now();
             this.game = this.gameService.moveBall(this.game, this.paddle);
 
-            if (!this.game.isOver) { 
-              this.timeout();
+            if (!this.game.isOver) {
+                let end = Date.now();
+                let remainingTime = (1000 / 60) - (end - start);
+
+                this.timeout(remainingTime);
             }
-        }, 1000 / 60);
+        }, time);
     }
 }
