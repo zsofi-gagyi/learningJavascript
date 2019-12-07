@@ -1,0 +1,16 @@
+<div class="area">
+  <h2>Search for a cat</h2>
+  <p>Narrow your search by name: </p>
+  <input #name (input)="search(name.value, fur.value)" />
+  <p>and/or by fur: </p>
+  <input #fur (input)="search(name.value, fur.value)" />
+  <h2>Search results:</h2>
+  <ul class="search-result">
+    <li *ngFor="let cat of cats$ | async">
+      <!-- the async pipe means that the "subscribing" is not necessary in the .ts component-->
+      <a routerLink="/detail/{{cat.id}}">
+        {{cat.name}}
+      </a>
+    </li>
+  </ul>
+</div>

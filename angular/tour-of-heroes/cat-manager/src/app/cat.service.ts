@@ -51,6 +51,54 @@ export class CatService {
         );
     }
 
+    //GET with PARAMETERS = SEARCH
+    searchCats(name: string, fur: string): Observable<Cat[]> {
+
+        if (!name.trim() && !fur.trim()) {
+            // refuse searching for empty terms
+            return of([]);
+        }
+
+        let url = this.createUrlWithSearchTerms(name, fur);
+        console.log("url " + url);
+
+        return this.http.get<Cat[]>(url).pipe(
+            tap(_ => {
+                if (name.trim() && fur.trim()) {
+                    this.log(`found cats with name containing "${name}" and fur containing "${fur}"`);
+                    return;
+                }
+                
+                if (name.trim()) {
+                    this.log(`found cats with name containing "${name}"`);
+                }
+
+                if (fur.trim()) {
+                    this.log(`found cats with fur containing "${fur}"`);
+                } 
+            }),
+            catchError(this.handleError<Cat[]>('searchCats', []))
+        );
+    }
+
+    createUrlWithSearchTerms(name: string, fur: string): string {
+        let url = this.catsUrl;
+
+        if (name.trim()) {
+            url += "/?name=" + name;
+
+            if (fur.trim()) {
+                url += "&fur=" + fur;
+            }
+        } else {
+            if (fur.trim()) {
+                url += "/?fur=" + fur;
+            }
+        }
+
+        return url;
+    }
+
     //POST
     postCat(name: string, fur: string): Observable<any> {
         const newCat = new CatWithoutId(name, fur);

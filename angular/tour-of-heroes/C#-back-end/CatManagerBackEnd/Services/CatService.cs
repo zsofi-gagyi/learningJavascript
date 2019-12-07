@@ -31,6 +31,22 @@ namespace CatManagerBackEnd.Services
             return _catList;
         }
 
+        public List<Cat> getCatsWith(string? name, string? fur)
+        {
+            if (name != null & fur != null)
+            {
+                return _catList.Where(cat => cat.name.ToLower().Contains(name.ToLower()) && 
+                                             cat.fur.ToLower().Contains(fur.ToLower())).ToList();
+            }
+
+            if (name != null)
+            {
+                return _catList.Where(cat => cat.name.ToLower().Contains(name.ToLower())).ToList();
+            }
+
+            return _catList.Where(cat => cat.fur.ToLower().Contains(fur.ToLower())).ToList();
+        }
+
         public Cat getCat(int id)
         {
             return _catList.Where(cat => cat.id == id).FirstOrDefault();

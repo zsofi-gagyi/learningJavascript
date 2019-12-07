@@ -22,6 +22,18 @@ namespace CatManagerBackEnd.Controllers
             return _catService.getAllCats();
         }
 
+        //search
+        [HttpGet()]
+        public List<Cat> Search(string? name, string? fur)
+        {
+            if (name != null || fur != null)
+            {
+                return _catService.getCatsWith(name, fur);
+            }
+
+            return new List<Cat>();
+        }
+
         [HttpGet("{id}")]
         public Cat Get(int id)
         {

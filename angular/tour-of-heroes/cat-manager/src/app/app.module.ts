@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FavouriteComponent } from './favourite/favourite.component';
 import { CreateNewComponent } from './create-new/create-new.component';
+import { SearchComponent } from './cat-search/cat-search.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CreateNewComponent } from './create-new/create-new.component';
     MessagesComponent,
     DashboardComponent,
     FavouriteComponent,
-    CreateNewComponent
+    CreateNewComponent,
+    SearchComponent
   ],
   imports: [
       BrowserModule,
