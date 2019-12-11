@@ -6,18 +6,36 @@ import { Ball } from './ball';
 @Injectable({
     providedIn: 'root'
 })
-export class GameService {
+export class FixedTimeGameService {
 
     constructor() { }
 
     moveBall(game: Game, paddle: Box): Game {
 
-        game.ball.updateLimits();
+        console.log("ball vertical mov " + game.ball.verticalMovement);
+
+        this.reflectBallFromPaddleIfTouching(game, paddle);
+        this.reflectBallFromBlocksIfTouching(game);
+        this.reflectBallFromWallsIfTouching(game);
+
+        this.updateBallPositionAndLimits(game);
+ 
+        this.checkIfGameIsOver(game);
+
+        return game;
+    }
+
+    reflectBallFromPaddleIfTouching(game: Game, paddle: Box) {
+
+        console.log("in paddle reflectin'");
 
         if (game.ball.limits.lower <= paddle.limits.upper) {
             paddle.updateLimits();
             this.reflectBallFromBox(paddle, game.ball);
         }
+    }
+
+    reflectBallFromBlocksIfTouching(game: Game) {
 
         let lowestBlockCorner = game.blocks
             .map(b => b.limits.lower)
@@ -36,29 +54,16 @@ export class GameService {
 
             game.blocks = game.blocks.filter(e => e.lives);
         }
-
-        this.reflectBallFromWallsIfNeeded(game);
-
-        game.ball.horizontalCoord += game.ball.horizontalMovement;
-        game.ball.verticalCoord += game.ball.verticalMovement;
-
-        if (!game.blocks.length) {
-            game.endingMessage = "You won! :)"
-        }
-
-        if (game.ball.verticalCoord > game.gameHeight) {
-            game.endingMessage = "Game over :("
-        }
-
-        return game;
     }
 
     reflectBallFromBox(box: Box, ball: Ball): boolean {
 
-        //the RIGHT of the ball is on the same level as the LEFT of the box,      or
+        console.log("in box reflectin'");
+
+        //(the RIGHT of the ball is on the same level as the LEFT of the box,      or
         if ((ball.limits.right === box.limits.left ||
 
-            //the LEFT of the ball is on the same level as the RIGHT of the box
+            //the LEFT of the ball is on the same level as the RIGHT of the box)
             ball.limits.left === box.limits.right) &&
 
             //and they are vertically in the right place
@@ -68,6 +73,8 @@ export class GameService {
             ball.horizontalMovement *= -1;
             return true;
         }
+
+        console.log("ball.limits.lower " + ball.limits.lower + ", box.limits.upper " + box.limits.upper);
 
         //the BOTTOM of the ball is on the same level as the TOP of the box,     or
         if ((ball.limits.lower === box.limits.upper ||
@@ -79,6 +86,8 @@ export class GameService {
             (ball.limits.right <= box.limits.right + ball.width &&
                 ball.limits.left >= box.limits.left - ball.width)) {
 
+            console.log("reflected");
+
             ball.verticalMovement *= -1;
             return true;
         }
@@ -86,13 +95,30 @@ export class GameService {
         return false;
     }
 
-    reflectBallFromWallsIfNeeded(game: Game) {
+    reflectBallFromWallsIfTouching(game: Game) {
         if (game.ball.horizontalCoord <= 0 || game.ball.horizontalCoord >= game.gameWidth - game.ball.width) {
             game.ball.horizontalMovement *= -1;
         }
 
         if (game.ball.verticalCoord <= 0) {
             game.ball.verticalMovement *= -1;
+        }
+    }
+
+    updateBallPositionAndLimits(game) {
+        game.ball.horizontalCoord += game.ball.horizontalMovement;
+        game.ball.verticalCoord += game.ball.verticalMovement;
+
+        game.ball.updateLimits();
+    }
+
+    checkIfGameIsOver(game) {
+        if (!game.blocks.length) {
+            game.endingMessage = "You won! :)"
+        }
+
+        if (game.ball.verticalCoord > game.gameHeight) {
+            game.endingMessage = "Game over :("
         }
     }
 }

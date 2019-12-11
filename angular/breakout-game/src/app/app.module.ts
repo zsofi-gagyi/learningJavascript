@@ -3,14 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { PureAngularVersionComponent } from './pure-angular-version/pure-angular-version.component';
+import { FixedTimeStepVersionComponent } from './fixed-time-version/fixed-time-version.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { VariableTimeStepVersionComponent } from './variable-time-version/variable-time-version.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PureAngularVersionComponent,
-    MainPageComponent
+    FixedTimeStepVersionComponent,
+    MainPageComponent,
+    VariableTimeStepVersionComponent
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PureAngularVersionComponent } from './pure-angular-version.component';
+import { FixedTimeStepVersionComponent } from './pure-angular-version.component';
 
 describe('PureAngularVersionComponent', () => {
-  let component: PureAngularVersionComponent;
-  let fixture: ComponentFixture<PureAngularVersionComponent>;
+  let component: FixedTimeStepVersionComponent;
+  let fixture: ComponentFixture<FixedTimeStepVersionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PureAngularVersionComponent ]
+      declarations: [ FixedTimeStepVersionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PureAngularVersionComponent);
+    fixture = TestBed.createComponent(FixedTimeStepVersionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

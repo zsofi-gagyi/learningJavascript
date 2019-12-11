@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Game } from '../game';
-import { GameService } from '../game.service';
+import { FixedTimeGameService } from '../fixed-time-game.service';
 import { Box } from '../box';
 
 @Component({
-  selector: 'app-pure-angular-version',
-  templateUrl: './pure-angular-version.component.html',
-  styleUrls: ['./pure-angular-version.component.css']
+  selector: 'app-fixed-time-version',
+    templateUrl: './fixed-time-version.component.html',
+    styleUrls: ['./fixed-time-version.component.css']
 })
-export class PureAngularVersionComponent implements OnInit {
+export class FixedTimeStepVersionComponent implements OnInit {
     game: Game;
     paddle: Box;
    
-    constructor(private gameService: GameService) {
-        this.game = new Game();
+    constructor(private gameService: FixedTimeGameService) {
+        this.game = new Game(true);
         this.paddle = this.game.createPaddle(); 
 
         this.timeout(0);
