@@ -1,0 +1,25 @@
+<div class="gameArea"
+     [style.height.px]="game.gameHeight"
+     [style.width.px]="game.gameWidth">
+  <div *ngFor="let block of game.blocks">
+    <div class="block"
+         [style.transform]="'translate(' + block.horizontalCoord + 'px,' + block.verticalCoord + 'px)'"
+         [style.height.px]="block.height"
+         [style.width.px]="block.width"
+         [style.background-color]="game.levelColors[block.lives - 1]">
+    </div>
+  </div>
+  <div *ngIf="!game.endingMessage">
+    <div class="ball"
+         [style.transform]="'translate(' + game.ball.horizontalCoord + 'px,' + game.ball.verticalCoord + 'px)'"
+         [style.height.px]="game.ball.height"
+         [style.width.px]="game.ball.width">
+    </div>
+  </div>
+  <h1 *ngIf="game.endingMessage" class="toCenterHorizontally">{{game.endingMessage}}</h1>
+  <div class="paddle"
+       [style.transform]="'translate(' + paddle.horizontalCoord + 'px,' + paddle.verticalCoord + 'px)'"
+       [style.height.px]="paddle.height"
+       [style.width.px]="paddle.width">
+  </div>
+</div>
