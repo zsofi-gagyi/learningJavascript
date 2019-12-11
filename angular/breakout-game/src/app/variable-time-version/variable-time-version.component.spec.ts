@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VariableTimeStepVersionComponent } from './rx-js-version.component';
+import { VariableTimeStepVersionComponent } from './variable-time-version.component';
 
 describe('RxJsVersionComponent', () => {
   let component: VariableTimeStepVersionComponent;

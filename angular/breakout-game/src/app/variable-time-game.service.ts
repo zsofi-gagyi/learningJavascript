@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Game } from './game';
-import { Box } from './box';
-import { Ball } from './ball';
+import { Game } from './models/game';
+import { Box } from './models/box';
+import { Ball } from './models/ball';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ComplexGameService {
+export class VariableTimeGameService {
 
     constructor() { }
 

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FixedTimeStepVersionComponent } from './pure-angular-version.component';
+import { FixedTimeStepVersionComponent } from './fixed-time-version.component';
 
 describe('PureAngularVersionComponent', () => {
   let component: FixedTimeStepVersionComponent;

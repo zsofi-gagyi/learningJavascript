@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { Game } from '../game';
-import { ComplexGameService } from '../variable-time-game.service';
-import { Box } from '../box';
+import { Game } from '../models/game';
+import { VariableTimeGameService } from '../variable-time-game.service';
+import { Box } from '../models/box';
 
 @Component({
   selector: 'app-variable-time-version',
@@ -14,7 +14,7 @@ export class VariableTimeStepVersionComponent implements OnInit {
     game: Game;
     paddle: Box;
 
-    constructor(private gameService: ComplexGameService) {
+    constructor(private gameService: VariableTimeGameService) {
         this.game = new Game(false);
         this.paddle = this.game.createPaddle();
 
