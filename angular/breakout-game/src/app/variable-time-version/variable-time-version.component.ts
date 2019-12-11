@@ -43,10 +43,9 @@ export class VariableTimeStepVersionComponent implements OnInit {
     }
 
     gameLoop(lastTime: number) {
-      setTimeout(() => {
+        setTimeout(() => {
             let currentTime = Date.now();
-          let ellapsed = currentTime - lastTime;
-          console.log("ellapded " + ellapsed);
+            let ellapsed = currentTime - lastTime;
 
             this.game = this.gameService.moveBall(this.game, this.paddle, ellapsed);
 
@@ -54,6 +53,6 @@ export class VariableTimeStepVersionComponent implements OnInit {
                 this.gameLoop(currentTime);
             }
 
-      }, Math.floor((Math.random() * 2) + 1) * 1000 / 120); 
+        }, Math.floor((Math.random() * 2) + 1) * 1000 / 120); 
     }
 }

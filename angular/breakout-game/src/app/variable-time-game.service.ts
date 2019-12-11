@@ -2,25 +2,30 @@ import { Injectable } from '@angular/core';
 import { Game } from './models/game';
 import { Box } from './models/box';
 import { Ball } from './models/ball';
+import { Block } from './models/block';
+import { Point } from './models/point';
+import { IntersectionDetectorService } from './intersection-detector.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VariableTimeGameService {
 
-    constructor() { }
+    constructor(private intersectionDetector: IntersectionDetectorService) {
+    }
 
 
     moveBall(game: Game, paddle: Box, time: number): Game {
         this.updatePositionAndLimitsOfBall(game, time);
 
         this.reflectBallFromPaddleIfTouchingOrCrossed(game, paddle);
-        //this.reflectBallFromBlocksIfTouchingOrCrossed(game);
+
+        this.reflectBallFromBlocksIfTouchingOrCrossed(game.ball, game.blocks);
+        game.blocks = game.blocks.filter(block => block.lives);
+
         this.reflectBallFromWallsIfTouchingOrCrossed(game);
 
         this.checkIfGameIsOver(game);
-
-        console.log("ball moved to " + game.ball.horizontalCoord);
 
         return game;
     }
@@ -76,6 +81,122 @@ export class VariableTimeGameService {
         ball.verticalCoord += -1 * verticalDistanceToUndo;
     }
 
+    reflectBallFromBlocksIfTouchingOrCrossed(ball: Ball, blocks: Block[]) {
+        let touchedBlocks = blocks.filter(block =>
+            block.limits.lower >= ball.limits.upper &&
+            block.limits.upper <= ball.limits.lower &&
+            block.limits.right >= ball.limits.left &&
+            block.limits.left <= ball.limits.right);
+
+        if (touchedBlocks.length) {
+
+            let block = touchedBlocks[0];
+                block.lives--;
+            this.reflectBallFromBlock(ball, block);
+        }
+    }
+
+    reflectBallFromBlock(ball: Ball, block: Block) {
+        let relevantSides = {};
+
+        let ballMovementDescribingSegment = [
+            new Point(0, 0), // current position of the forward facing corner of the ball
+            new Point(0, 0)  // past position of the aformentioned corner
+        ];
+
+        //for defining how many steps back to go for calculating the second point of the
+        //ballMovementDescribingSegment
+        let segmentBackTrackMultiplier = 1000;
+
+        //if the ball goes downward, the upper face of the box might have been crossed
+        if (ball.verticalMovement > 0) {
+            relevantSides["upper"] = [
+                new Point(block.limits.left, block.limits.upper),
+                new Point(block.limits.right, block.limits.upper)
+            ];
+
+            ballMovementDescribingSegment[0].verticalCoord = ball.limits.lower;
+            ballMovementDescribingSegment[1].verticalCoord =
+                ball.limits.lower - (ball.verticalCoord * segmentBackTrackMultiplier); 
+        }
+
+        //if the ball goes upward, the lower face of the box might have been crossed
+        if (ball.verticalMovement < 0) {
+            relevantSides["lower"] = [
+                new Point(block.limits.left, block.limits.lower),
+                new Point(block.limits.right, block.limits.lower)
+            ];
+
+            ballMovementDescribingSegment[0].verticalCoord = ball.limits.upper;
+            ballMovementDescribingSegment[1].verticalCoord =
+                ball.limits.upper - (ball.verticalCoord * segmentBackTrackMultiplier);
+        }
+
+        //if the ball goes rightward, the left face of the box might have been crossed
+        if (ball.horizontalMovement < 0) {
+            relevantSides["left"] = [
+                new Point(block.limits.left, block.limits.lower),
+                new Point(block.limits.left, block.limits.upper)
+            ];
+
+            ballMovementDescribingSegment[0].horizontalCoord = ball.limits.right;
+            ballMovementDescribingSegment[1].horizontalCoord =
+                ball.limits.right - (ball.horizontalCoord * segmentBackTrackMultiplier); 
+        }
+
+        //if the ball goes leftward, the right face of the box might have been crossed
+        if (ball.horizontalMovement > 0) {
+            relevantSides["right"] = [
+                new Point(block.limits.right, block.limits.lower),
+                new Point(block.limits.right, block.limits.upper)
+            ];
+
+            ballMovementDescribingSegment[0].horizontalCoord = ball.limits.left;
+            ballMovementDescribingSegment[1].horizontalCoord =
+                ball.limits.left - (ball.horizontalCoord * segmentBackTrackMultiplier); 
+        }
+
+        for (let sideName in relevantSides) {
+                let crossedThisSide = this.intersectionDetector.doLineSegmentsIntersect(
+                    relevantSides[sideName][0],
+                    relevantSides[sideName][1],
+                    ballMovementDescribingSegment[0],
+                    ballMovementDescribingSegment[1]
+                );
+
+                if (crossedThisSide) {
+                    switch (sideName) {
+                        case "upper":
+                            //this.backtrackBallToCrossedLimit(
+                         //       ball, relevantSides[sideName][0].verticalCoord, ball.limits.lower, true
+                          //  );
+                            ball.verticalMovement *= -1;
+                            return;
+                        case "lower":
+                         //   this.backtrackBallToCrossedLimit(
+                        //        ball, relevantSides[sideName][0].verticalCoord, ball.limits.upper, true
+                         //   );
+                            ball.verticalMovement *= -1;
+                            return;
+ 
+                        case "left":
+                         //   this.backtrackBallToCrossedLimit(
+                       //         ball, relevantSides[sideName][0].horizontalCoord, ball.limits.right, false
+                        //    );
+                            ball.horizontalMovement *= -1;
+                            return;
+                        case "right":
+                        //    this.backtrackBallToCrossedLimit(
+                        //        ball, relevantSides[sideName][0].horizontalCoord, ball.limits.left, false
+                        //    );
+                            ball.horizontalMovement *= -1;
+                            return;
+                    }
+                }
+        }
+
+    }
+
     reflectBallFromWallsIfTouchingOrCrossed(game: Game) {
 
         //the ball is high enough to be reflected  from the ceiling
@@ -84,13 +205,13 @@ export class VariableTimeGameService {
             game.ball.verticalMovement *= -1;
         }
 
-        //the ball is left enough to be reflected  from the left wall
+        //the ball is leftward enough to be reflected  from the left wall
         if (game.ball.limits.left <= 0) {
             this.backtrackBallToCrossedLimit(game.ball, 0, game.ball.limits.left, false);
             game.ball.horizontalMovement *= -1;
         }
 
-        //the ball is right enough to be reflected  from the right wall
+        //the ball is rightward enough to be reflected  from the right wall
         if (game.ball.limits.right >= game.gameWidth) {
             this.backtrackBallToCrossedLimit(game.ball, game.gameWidth, game.ball.limits.right, false);
             game.ball.horizontalMovement *= -1;

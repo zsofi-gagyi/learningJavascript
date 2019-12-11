@@ -58,6 +58,7 @@ export class Game {
     }
 
     createPaddle(): Box {
-        return new Box(330, 550, 310, 20);
+        //return new Box(330, 550, 310, 20);
+        return new Box(0, 550, 1300, 20);
     }
 }
