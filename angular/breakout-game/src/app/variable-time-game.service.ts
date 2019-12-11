@@ -38,33 +38,62 @@ export class VariableTimeGameService {
             //the ball is low enough to be reflected     and
         if (game.ball.limits.lower >= paddle.limits.upper &&
 
-            //at least a point of the ball is touching the upper part of the paddle
+            //is in the correct coordonate range, horizontally
             (game.ball.limits.left >= paddle.limits.left - game.ball.width &&
              game.ball.limits.right <= paddle.limits.right + game.ball.width)
         ) {
+            this.backtrackBallToCrossedLimit(game.ball, paddle.limits.upper, game.ball.limits.lower, true);
             game.ball.verticalMovement *= -1;
-            //TODO move it back to the boundary
         }
+    }
+
+    //TODO: for more accuracy, add the backtracked distance to the ball's movement in the correct
+    //direction
+    backtrackBallToCrossedLimit(ball: Ball, crossedBoundaryCoordonate: number,
+                                coordinateOfBallLimitCrossingTheBoundary: number, reflectionIsHorizontal: boolean) {
+        if (reflectionIsHorizontal) {
+            this.reflectHorizontally(ball, coordinateOfBallLimitCrossingTheBoundary, crossedBoundaryCoordonate);
+        } else {
+            this.reflectVertically(ball, coordinateOfBallLimitCrossingTheBoundary, crossedBoundaryCoordonate);
+        }
+
+        ball.updateLimits();
+    }
+
+    reflectHorizontally(ball: Ball, coordinateOfBallCrossingTheLimit: number, crossedLimitCoordonate: number) {
+        let verticalDistanceToUndo = coordinateOfBallCrossingTheLimit - crossedLimitCoordonate;
+        let horizontalDistanceToUndo = ball.horizontalMovement / ball.verticalMovement * verticalDistanceToUndo;
+
+        ball.horizontalCoord += -1 * horizontalDistanceToUndo;
+        ball.verticalCoord += -1 * verticalDistanceToUndo;
+    }
+
+    reflectVertically(ball: Ball, coordinateOfBallCrossingTheLimit: number, crossedLimitCoordonate: number) {
+        let horizontalDistanceToUndo = coordinateOfBallCrossingTheLimit - crossedLimitCoordonate;
+        let verticalDistanceToUndo = ball.verticalMovement / ball.horizontalMovement * horizontalDistanceToUndo;
+
+        ball.horizontalCoord += -1 * horizontalDistanceToUndo;
+        ball.verticalCoord += -1 * verticalDistanceToUndo;
     }
 
     reflectBallFromWallsIfTouchingOrCrossed(game: Game) {
 
         //the ball is high enough to be reflected  from the ceiling
         if (game.ball.limits.upper <= 0) {
+            this.backtrackBallToCrossedLimit(game.ball, 0, game.ball.limits.upper, true);
             game.ball.verticalMovement *= -1;
-            //TODO move it back to the boundary
         }
 
         //the ball is left enough to be reflected  from the left wall
         if (game.ball.limits.left <= 0) {
+            this.backtrackBallToCrossedLimit(game.ball, 0, game.ball.limits.left, false);
             game.ball.horizontalMovement *= -1;
-            //TODO move it back to the boundary
         }
 
         //the ball is right enough to be reflected  from the right wall
         if (game.ball.limits.right >= game.gameWidth) {
+            this.backtrackBallToCrossedLimit(game.ball, game.gameWidth, game.ball.limits.right, false);
             game.ball.horizontalMovement *= -1;
-            //TODO move it back to the boundary
         }
     }
 
