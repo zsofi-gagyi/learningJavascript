@@ -1,29 +1,32 @@
-import { Injectable } from '@angular/core';
-import { Point } from './models/point';
-
 // by Timm Preetz, copied from here: https://gist.github.com/tp/75cb619a7e40e6ad008ef2a6837bbdb2
+// adapted and simplified to the current project
 // based on: https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 
-export interface Point2D {
-    readonly x: number;
-    readonly y: number;
+export class Point {
+    horizontalCoord: number;
+    verticalCoord: number;
+
+    constructor(horizontalCoord, verticalCoord) {
+        this.horizontalCoord = horizontalCoord;
+        this.verticalCoord = verticalCoord;
+    }
 }
 
 export class LineSegment {
-    public readonly start: Point2D;
-    public readonly end: Point2D;
+    public readonly start: Point;
+    public readonly end: Point;
 
     public readonly length: number;
-    public readonly direction: Point2D;
+    public readonly direction: Point;
 
     constructor(start: Point, end: Point) {
         this.start = {
-            x: start.horizontalCoord,
-            y: start.verticalCoord
+            horizontalCoord: start.horizontalCoord,
+            verticalCoord: start.verticalCoord
         };
         this.end = {
-            x: end.horizontalCoord,
-            y: end.verticalCoord
+            horizontalCoord: end.horizontalCoord,
+            verticalCoord: end.verticalCoord
         };
 
         this.length = distance(this.start, this.end);
@@ -33,35 +36,35 @@ export class LineSegment {
         }
 
         this.direction = {
-            x: this.end.x - this.start.x,
-            y: this.end.y - this.start.y,
+            horizontalCoord: this.end.horizontalCoord - this.start.horizontalCoord,
+            verticalCoord: this.end.verticalCoord - this.start.verticalCoord,
         };
     }
 }
 
-export function distance(p1: Point2D, p2: Point2D): number {
-    const distance = Math.sqrt(Math.pow(p2.y - p1.y, 2) + Math.pow(p2.x - p1.x, 2));
+function distance(p1: Point, p2: Point): number {
+    const distance = Math.sqrt(Math.pow(p2.verticalCoord - p1.verticalCoord, 2) + Math.pow(p2.horizontalCoord - p1.horizontalCoord, 2));
 
     return distance;
 }
 
-export function subtractPoints(a: Point2D, b: Point2D): Point2D {
-    return { x: a.x - b.x, y: a.y - b.y };
+function subtractPoints(a: Point, b: Point): Point {
+    return { horizontalCoord: a.horizontalCoord - b.horizontalCoord, verticalCoord: a.verticalCoord - b.verticalCoord };
 }
 
-export function addPoints(a: Point2D, b: Point2D): Point2D {
-    return { x: a.x + b.x, y: a.y + b.y };
+function addPoints(a: Point, b: Point): Point {
+    return { horizontalCoord: a.horizontalCoord + b.horizontalCoord, verticalCoord: a.verticalCoord + b.verticalCoord };
 }
 
-function dot(u: Point2D, v: Point2D): number {
-    return u.x * v.x + u.y + v.y;
+function dot(u: Point, v: Point): number {
+    return u.horizontalCoord * v.horizontalCoord + u.verticalCoord + v.verticalCoord;
 }
 
 /**
  * 2-dimensional vector cross product v × w = vx wy − vy wx
  */
-function cross(v: Point2D, w: Point2D): number {
-    return v.x * w.y - v.y * w.x;
+function cross(v: Point, w: Point): number {
+    return v.horizontalCoord * w.verticalCoord - v.verticalCoord * w.horizontalCoord;
 }
 
 const epsilon = 1 / 1000000;
