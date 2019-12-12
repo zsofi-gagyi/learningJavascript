@@ -7,7 +7,7 @@ With randomly generated levels and enemy blocks which have "lives" (need to be t
 Built using data binding, and two versions of a game loop: one which keeps updating at a fixed time step (with synchronization), 
 and one with a variable time step.
 
-Incorporating Using Timm Preetz's
+Incorporating (and modifying a bit in order to make it fit) Timm Preetz's
         <a href="https://gist.github.com/tp/75cb619a7e40e6ad008ef2a6837bbdb2">
           Gist</a>
 for finding if two line segments intersect (for collision detection in the variable time step version).
