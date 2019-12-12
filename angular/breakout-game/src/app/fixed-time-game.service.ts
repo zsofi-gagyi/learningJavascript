@@ -11,9 +11,6 @@ export class FixedTimeGameService {
     constructor() { }
 
     moveBall(game: Game, paddle: Box): Game {
-
-        console.log("ball vertical mov " + game.ball.verticalMovement);
-
         this.reflectBallFromPaddleIfTouching(game, paddle);
         this.reflectBallFromBlocksIfTouching(game);
         this.reflectBallFromWallsIfTouching(game);
@@ -26,9 +23,6 @@ export class FixedTimeGameService {
     }
 
     reflectBallFromPaddleIfTouching(game: Game, paddle: Box) {
-
-        console.log("in paddle reflectin'");
-
         if (game.ball.limits.lower <= paddle.limits.upper) {
             paddle.updateLimits();
             this.reflectBallFromBox(paddle, game.ball);
@@ -58,8 +52,6 @@ export class FixedTimeGameService {
 
     reflectBallFromBox(box: Box, ball: Ball): boolean {
 
-        console.log("in box reflectin'");
-
         //(the RIGHT of the ball is on the same level as the LEFT of the box,      or
         if ((ball.limits.right === box.limits.left ||
 
@@ -74,8 +66,6 @@ export class FixedTimeGameService {
             return true;
         }
 
-        console.log("ball.limits.lower " + ball.limits.lower + ", box.limits.upper " + box.limits.upper);
-
         //the BOTTOM of the ball is on the same level as the TOP of the box,     or
         if ((ball.limits.lower === box.limits.upper ||
 
@@ -85,8 +75,6 @@ export class FixedTimeGameService {
             //and they are horizontally in the right place
             (ball.limits.right <= box.limits.right + ball.width &&
                 ball.limits.left >= box.limits.left - ball.width)) {
-
-            console.log("reflected");
 
             ball.verticalMovement *= -1;
             return true;

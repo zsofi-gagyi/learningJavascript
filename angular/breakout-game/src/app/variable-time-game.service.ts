@@ -4,16 +4,15 @@ import { Box } from './models/box';
 import { Ball } from './models/ball';
 import { Block } from './models/block';
 import { Point } from './models/point';
-import { IntersectionDetectorService } from './intersection-detector.service';
+import { intersection, LineSegment } from './intersection-detector.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VariableTimeGameService {
 
-    constructor(private intersectionDetector: IntersectionDetectorService) {
+    constructor() {
     }
-
 
     moveBall(game: Game, paddle: Box, time: number): Game {
         this.updatePositionAndLimitsOfBall(game, time);
@@ -89,10 +88,16 @@ export class VariableTimeGameService {
             block.limits.left <= ball.limits.right);
 
         if (touchedBlocks.length) {
-
             let block = touchedBlocks[0];
                 block.lives--;
             this.reflectBallFromBlock(ball, block);
+
+            if (touchedBlocks.length > 1) {
+                block = touchedBlocks[1];
+                block.lives--;
+            }
+
+            //the ball is small enough that it won't touch more than 2 blocks at a time
         }
     }
 
@@ -117,7 +122,7 @@ export class VariableTimeGameService {
 
             ballMovementDescribingSegment[0].verticalCoord = ball.limits.lower;
             ballMovementDescribingSegment[1].verticalCoord =
-                ball.limits.lower - (ball.verticalCoord * segmentBackTrackMultiplier); 
+                ball.limits.lower - (ball.verticalMovement * segmentBackTrackMultiplier); 
         }
 
         //if the ball goes upward, the lower face of the box might have been crossed
@@ -129,11 +134,11 @@ export class VariableTimeGameService {
 
             ballMovementDescribingSegment[0].verticalCoord = ball.limits.upper;
             ballMovementDescribingSegment[1].verticalCoord =
-                ball.limits.upper - (ball.verticalCoord * segmentBackTrackMultiplier);
+                ball.limits.upper - (ball.verticalMovement* segmentBackTrackMultiplier);
         }
 
         //if the ball goes rightward, the left face of the box might have been crossed
-        if (ball.horizontalMovement < 0) {
+        if (ball.horizontalMovement > 0) {
             relevantSides["left"] = [
                 new Point(block.limits.left, block.limits.lower),
                 new Point(block.limits.left, block.limits.upper)
@@ -141,11 +146,11 @@ export class VariableTimeGameService {
 
             ballMovementDescribingSegment[0].horizontalCoord = ball.limits.right;
             ballMovementDescribingSegment[1].horizontalCoord =
-                ball.limits.right - (ball.horizontalCoord * segmentBackTrackMultiplier); 
+                ball.limits.right - (ball.horizontalMovement * segmentBackTrackMultiplier); 
         }
 
         //if the ball goes leftward, the right face of the box might have been crossed
-        if (ball.horizontalMovement > 0) {
+        if (ball.horizontalMovement < 0) {
             relevantSides["right"] = [
                 new Point(block.limits.right, block.limits.lower),
                 new Point(block.limits.right, block.limits.upper)
@@ -153,48 +158,77 @@ export class VariableTimeGameService {
 
             ballMovementDescribingSegment[0].horizontalCoord = ball.limits.left;
             ballMovementDescribingSegment[1].horizontalCoord =
-                ball.limits.left - (ball.horizontalCoord * segmentBackTrackMultiplier); 
+                ball.limits.left - (ball.horizontalMovement * segmentBackTrackMultiplier); 
         }
 
         for (let sideName in relevantSides) {
-                let crossedThisSide = this.intersectionDetector.doLineSegmentsIntersect(
-                    relevantSides[sideName][0],
-                    relevantSides[sideName][1],
-                    ballMovementDescribingSegment[0],
-                    ballMovementDescribingSegment[1]
-                );
+            let crossedThisSide = this.oneOfTheLeadingCornersOfTheBallIntersectsTheSide(
+                sideName, relevantSides, ballMovementDescribingSegment, ball);
 
-                if (crossedThisSide) {
+            if (crossedThisSide) {
                     switch (sideName) {
                         case "upper":
-                            //this.backtrackBallToCrossedLimit(
-                         //       ball, relevantSides[sideName][0].verticalCoord, ball.limits.lower, true
-                          //  );
+                            this.backtrackBallToCrossedLimit(
+                                ball, relevantSides[sideName][0].verticalCoord, ball.limits.lower, true
+                            );
                             ball.verticalMovement *= -1;
                             return;
                         case "lower":
-                         //   this.backtrackBallToCrossedLimit(
-                        //        ball, relevantSides[sideName][0].verticalCoord, ball.limits.upper, true
-                         //   );
+                            this.backtrackBallToCrossedLimit(
+                                ball, relevantSides[sideName][0].verticalCoord, ball.limits.upper, true
+                            );
                             ball.verticalMovement *= -1;
                             return;
  
                         case "left":
-                         //   this.backtrackBallToCrossedLimit(
-                       //         ball, relevantSides[sideName][0].horizontalCoord, ball.limits.right, false
-                        //    );
+                            this.backtrackBallToCrossedLimit(
+                                ball, relevantSides[sideName][0].horizontalCoord, ball.limits.right, false
+                            );
                             ball.horizontalMovement *= -1;
                             return;
                         case "right":
-                        //    this.backtrackBallToCrossedLimit(
-                        //        ball, relevantSides[sideName][0].horizontalCoord, ball.limits.left, false
-                        //    );
+                            this.backtrackBallToCrossedLimit(
+                                ball, relevantSides[sideName][0].horizontalCoord, ball.limits.left, false
+                            );
                             ball.horizontalMovement *= -1;
                             return;
                     }
                 }
         }
 
+    }
+
+    oneOfTheLeadingCornersOfTheBallIntersectsTheSide(
+        sideName: string, relevantSides, ballMovementDescribingSegment: Point[], ball: Ball): boolean {
+        return intersection(
+            new LineSegment(relevantSides[sideName][0], relevantSides[sideName][1]),
+            new LineSegment(ballMovementDescribingSegment[0], ballMovementDescribingSegment[1])
+            ) ||
+
+            intersection(
+            new LineSegment(relevantSides[sideName][0], relevantSides[sideName][1]),
+            new LineSegment(
+                new Point(
+                    ballMovementDescribingSegment[0].horizontalCoord + ball.width * (ball.horizontalMovement > 0 ? -1 : 1),
+                    ballMovementDescribingSegment[0].verticalCoord
+                ),
+                new Point(
+                    ballMovementDescribingSegment[1].horizontalCoord + ball.width * (ball.horizontalMovement > 0 ? -1 : 1),
+                    ballMovementDescribingSegment[1].verticalCoord))
+            ) ||
+
+            intersection(
+            new LineSegment(relevantSides[sideName][0], relevantSides[sideName][1]),
+            new LineSegment(
+                new Point(
+                    ballMovementDescribingSegment[0].horizontalCoord,
+                    ballMovementDescribingSegment[0].verticalCoord + ball.height * (ball.verticalMovement > 0 ? -1 : 1)
+                ),
+                new Point(
+                    ballMovementDescribingSegment[1].horizontalCoord,
+                    ballMovementDescribingSegment[1].verticalCoord + ball.height * (ball.verticalMovement > 0 ? -1 : 1),
+
+                )));
     }
 
     reflectBallFromWallsIfTouchingOrCrossed(game: Game) {

@@ -1,129 +1,123 @@
 import { Injectable } from '@angular/core';
 import { Point } from './models/point';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IntersectionDetectorService {
+// by Timm Preetz, copied from here: https://gist.github.com/tp/75cb619a7e40e6ad008ef2a6837bbdb2
+// based on: https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 
-    constructor() { }
+export interface Point2D {
+    readonly x: number;
+    readonly y: number;
+}
 
- /**
- * @author Peter Kelley
- * @author pgkelley4@gmail.com
- * 
- * adatpted to typescript and the current project's axis notation
- */
+export class LineSegment {
+    public readonly start: Point2D;
+    public readonly end: Point2D;
+
+    public readonly length: number;
+    public readonly direction: Point2D;
+
+    constructor(start: Point, end: Point) {
+        this.start = {
+            x: start.horizontalCoord,
+            y: start.verticalCoord
+        };
+        this.end = {
+            x: end.horizontalCoord,
+            y: end.verticalCoord
+        };
+
+        this.length = distance(this.start, this.end);
+
+        if (this.length === 0 || isNaN(this.length) || !isFinite(this.length)) {
+            throw new Error('Invalid length');
+        }
+
+        this.direction = {
+            x: this.end.x - this.start.x,
+            y: this.end.y - this.start.y,
+        };
+    }
+}
+
+export function distance(p1: Point2D, p2: Point2D): number {
+    const distance = Math.sqrt(Math.pow(p2.y - p1.y, 2) + Math.pow(p2.x - p1.x, 2));
+
+    return distance;
+}
+
+export function subtractPoints(a: Point2D, b: Point2D): Point2D {
+    return { x: a.x - b.x, y: a.y - b.y };
+}
+
+export function addPoints(a: Point2D, b: Point2D): Point2D {
+    return { x: a.x + b.x, y: a.y + b.y };
+}
+
+function dot(u: Point2D, v: Point2D): number {
+    return u.x * v.x + u.y + v.y;
+}
 
 /**
- * See if two line segments intersect. This uses the 
- * vector cross product approach described below:
- * http://stackoverflow.com/a/565282/786339
- * 
- * @param {Object} p point
- *  representing the start of the 1st line.
- * @param {Object} p2 point 
- *  representing the end of the 1st line.
- * @param {Object} q point 
- *  representing the start of the 2nd line.
- * @param {Object} q2 point 
- *  representing the end of the 2nd line.
+ * 2-dimensional vector cross product v × w = vx wy − vy wx
  */
-  doLineSegmentsIntersect(p: Point, p2: Point, q: Point, q2: Point): boolean {
-    var r = this.subtractPoints(p2, p);
-    var s = this.subtractPoints(q2, q);
+function cross(v: Point2D, w: Point2D): number {
+    return v.x * w.y - v.y * w.x;
+}
 
-    var uNumerator = this.crossProduct(this.subtractPoints(q, p), r);
-    var denominator = this.crossProduct(r, s);
+const epsilon = 1 / 1000000;
+function equals0(x: number) {
+    return Math.abs(x) < epsilon;
+}
 
-    if (uNumerator == 0 && denominator == 0) {
-        // They are coLlinear
+/**
+ *
+ * p + t r = q + u s
+ *
+ */
 
-        // Do they touch? (Are any of the points equal?)
-        if (this.equalPoints(p, q) || this.equalPoints(p, q2) || this.equalPoints(p2, q) || this.equalPoints(p2, q2)) {
-            return true
+export function intersection(ls0: LineSegment, ls1: LineSegment): boolean {
+    const p = ls0.start;
+    const r = ls0.direction;
+    const q = ls1.start;
+    const s = ls1.direction;
+
+    // r × s
+    const r_s = cross(r, s);
+    // (q − p) × r
+    const q_p_r = cross(subtractPoints(q, p), r);
+
+    if (equals0(r_s) && equals0(q_p_r)) {
+        // t0 = (q − p) · r / (r · r)
+        // const t0 = dot(subtractPoints(q, p), r) / dot(r, r);
+
+        // t1 = (q + s − p) · r / (r · r) = t0 + s · r / (r · r)
+        // const t1 = t0 + dot(s, r) / dot(r, r);
+
+        // NOTE(tp): For some reason (which I haven't spotted yet), the above t0 and hence t1 is wrong
+        // So resorting to calculating it 'backwards'
+        const t1 = dot(addPoints(q, subtractPoints(s, p)), r) / dot(r, r);
+        const t0 = t1 - dot(s, r) / dot(r, r);
+
+        if (t0 >= 0 && t0 <= 1 || t1 >= 0 && t1 <= 1) {
+            return true;
         }
-        // Do they overlap? (Are all the point differences in either direction the same sign)
-        return !this.allEqual([
-            (q.horizontalCoord - p.horizontalCoord < 0),
-            (q.horizontalCoord - p2.horizontalCoord < 0),
-            (q2.horizontalCoord - p.horizontalCoord < 0),
-            (q2.horizontalCoord - p2.horizontalCoord < 0)]) ||
-            !this.allEqual([
-                (q.verticalCoord - p.verticalCoord < 0),
-                (q.verticalCoord - p2.verticalCoord < 0),
-                (q2.verticalCoord - p.verticalCoord < 0),
-                (q2.verticalCoord - p2.verticalCoord < 0)]);
-    }
 
-    if (denominator == 0) {
-        // lines are paralell
         return false;
     }
 
-    var u = uNumerator / denominator;
-    var t = this.crossProduct(this.subtractPoints(q, p), s) / denominator;
-
-    return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
-}
-
-/**
- * Calculate the cross product of the two points.
- * 
- * @param {Object} point1 point 
- * @param {Object} point2 point 
- * 
- * @return the cross product result as a float
- */
-    crossProduct(point1: Point, point2: Point): number {
-        return point1.horizontalCoord * point2.verticalCoord -
-            point1.verticalCoord * point2.horizontalCoord;
-}
-
-/**
- * Subtract the second point from the first.
- * 
- * @param {Object} point1 point
- * @param {Object} point2 point 
- * 
- * @return the subtraction result as a point object
- */
-subtractPoints(point1: Point, point2: Point): Point {
-    var result = new Point(
-        point1.horizontalCoord - point2.horizontalCoord,
-        point1.verticalCoord - point2.verticalCoord);
-
-    return result;
-}
-
-/**
- * See if the points are equal.
- *
- * @param {Object} point1 point 
- * @param {Object} point2 point
- * 
- * @return if the points are equal
- */
-equalPoints(point1: Point, point2: Point): boolean {
-    return (point1.horizontalCoord === point2.horizontalCoord) &&
-        (point1.verticalCoord === point2.verticalCoord)
-}
-
-/**
- * See if all arguments are equal.
- *
- * @param {...} args arguments that will be compared by '=='.
- *
- * @return if all arguments are equal
- */
-allEqual(args: boolean[]): boolean {
-    var firstValue = args[0],
-        i;
-    for (i = 1; i < args.length; i += 1) {
-        if (args[i] != firstValue) {
-            return false;
-        }
+    if (equals0(r_s) && !equals0(q_p_r)) {
+        return false;
     }
-    return true;
-}
+
+    // t = (q − p) × s / (r × s)
+    const t = cross(subtractPoints(q, p), s) / cross(r, s);
+
+    // u = (q − p) × r / (r × s)
+    const u = cross(subtractPoints(q, p), r) / cross(r, s);
+
+    if (!equals0(r_s) && t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+        return true;
+    }
+
+    return false;
 }

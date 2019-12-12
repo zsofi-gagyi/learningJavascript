@@ -5,21 +5,26 @@
     Breakout arcade game in 1976 (see on
     <a href="https://en.wikipedia.org/wiki/Breakout_clone">wikipedia</a>).
   </p>
+  <p>
+    "Time step" used in <a href="http://gameprogrammingpatterns.com/game-loop.html">this</a> sense, to describe the game loop.
+    <br />
+    In each version, refresh page for a different (randomly-generated) level.
+  </p>
   <ul>
     <li>
-      <h3><a routerLink="fixedTimeStepVersion">Built with Angular, using a fixed time step</a></h3>
+      <h3><a routerLink="fixedTimeStepVersion">Simpler version with a fixed time step</a></h3>
     </li>
     <li>
-      <h3><a routerLink="variableTimeStepVersion">Built with Angular, using a variable time step</a></h3>
-      <p>Using Peter Kelley's
-        <a href="https://github.com/pgkelley4/line-segments-intersect/blob/master/js/line-segments-intersect.js">
-          function
+      <h3><a routerLink="variableTimeStepVersion">More complex version with a variable time step</a></h3>
+      <p>
+        Incorporating Timm Preetz's
+        <a href="https://gist.github.com/tp/75cb619a7e40e6ad008ef2a6837bbdb2">
+          Gist
         </a>
-      for finding if two line segments intersect (for collision detection).</p>
-    </li>
-    <li>
-      <p>"Time step" used in <a href="http://gameprogrammingpatterns.com/game-loop.html">this</a> sense, to describe the game loop.</p>
-      <p>In each version, refresh page for a different (randomly-generated) level.</p>
+        for finding if
+        <br />
+        two line segments intersect (for collision detection).
+      </p>
     </li>
   </ul>
 </div>
