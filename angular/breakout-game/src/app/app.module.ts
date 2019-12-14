@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FixedTimeStepVersionComponent } from './fixed-time-version/fixed-time-version.component';
-import { MainPageComponent } from './main-page/main-page.component';
-import { VariableTimeStepVersionComponent } from './variable-time-version/variable-time-version.component';
-import { GameAreaComponent } from './game-area/game-area.component';
+import { FixedTimeStepVersionComponent } from './components/fixed-time-version/fixed-time-version.component';
+import { MainPageComponent } from './components/main-page/main-page.component';
+import { VariableTimeStepVersionComponent } from './components/variable-time-version/variable-time-version.component';
+import { GameAreaComponent } from './child-components/game-area/game-area.component';
 
 @NgModule({
   declarations: [

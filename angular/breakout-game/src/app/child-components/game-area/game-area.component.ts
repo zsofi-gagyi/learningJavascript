@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Game } from '../models/game';
-import { Box } from '../models/box';
+import { Game } from '../../models/game';
+import { Box } from '../../models/box';
 
 @Component({
   selector: 'app-game-area',

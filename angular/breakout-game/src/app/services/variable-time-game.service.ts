@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Game } from './models/game';
-import { Box } from './models/box';
-import { Ball } from './models/ball';
-import { Block } from './models/block';
+import { Game } from '../models/game';
+import { Box } from '../models/box';
+import { Ball } from '../models/ball';
+import { Block } from '../models/block';
 import { intersection, LineSegment, Point } from './intersection-detector.service';
 
 @Injectable({

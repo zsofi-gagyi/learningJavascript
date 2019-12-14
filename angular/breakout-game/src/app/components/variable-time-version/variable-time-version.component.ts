@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { Game } from '../models/game';
-import { VariableTimeGameService } from '../variable-time-game.service';
-import { Box } from '../models/box';
+import { Game } from '../../models/game';
+import { VariableTimeGameService } from '../../services/variable-time-game.service';
+import { Box } from '../../models/box';
 
 @Component({
   selector: 'app-variable-time-version',

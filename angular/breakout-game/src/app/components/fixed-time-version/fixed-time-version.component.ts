@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { Game } from '../models/game';
-import { FixedTimeGameService } from '../fixed-time-game.service';
-import { Box } from '../models/box';
+import { Game } from '../../models/game';
+import { FixedTimeGameService } from '../../services/fixed-time-game.service';
+import { Box } from '../../models/box';
 
 @Component({
   selector: 'app-fixed-time-version',
