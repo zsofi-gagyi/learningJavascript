@@ -254,6 +254,13 @@ export class VariableTimeGameService {
         let crossedSides = Array<string>();
 
         for (let sideName in relevantSides) {
+
+                //          __________   / 
+                //         |__________| / /
+                //                  /__/ / 
+                //                  |__|/
+                //  
+                // searching for any of the three leading corners touching the block
             let crossedThisSide = this.oneOfTheLeadingCornersOfTheBallPassedTheSide(
                 sideName, relevantSides, ballMovementDescribingSegment, ball);
 
@@ -266,6 +273,13 @@ export class VariableTimeGameService {
 
         if (crossedSides.length > 1) {
             sideName = crossedSides.filter(side =>
+
+                //         __________
+                //        |__________|
+                //      __ / 
+                //     |__|
+                //
+                // of the two sides touched, choosing that which has touched the main leading corner
                 this.singleLeadingCornerOfTheBallPassedTheSide(side, relevantSides, ballMovementDescribingSegment))
             [0];
         }
