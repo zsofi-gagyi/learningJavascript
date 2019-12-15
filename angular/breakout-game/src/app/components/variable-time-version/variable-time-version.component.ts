@@ -54,6 +54,6 @@ export class VariableTimeStepVersionComponent implements OnInit {
                 this.gameLoop(currentTime);
             }
 
-        }, Math.floor((Math.random() * 2) + 1) * 1000 / 120); 
+        }, Math.floor((Math.random() * 2) + 1) * 1000 / 240); 
     }
 }
