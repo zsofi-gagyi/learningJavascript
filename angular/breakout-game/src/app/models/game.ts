@@ -28,7 +28,7 @@ export class Game {
         //reference (still 1/60 second).
         let speedCoefficient = fixedStep ? 1 : 1000 / 60;
 
-        this.ball = new Ball(480, 520, 20, 20, -5 / speedCoefficient, -5 / speedCoefficient);
+        this.ball = new Ball(480, 520, 25, 25, -5 / speedCoefficient, -5 / speedCoefficient);
     }
 
     createBlocks(): Block[] {
@@ -41,10 +41,10 @@ export class Game {
 
         for (let x = startingHorizontalCoordonate; x < this.gameWidth; x += blockWidth + 10) {
             for (let y = startingVerticalCoordonate; y < 230; y += blockHeight + 10) {
-                if (Math.random() > 0.3) {
+                if (Math.random() > 0.35) {
                     let lives = 1;
                     for (let i = 1; i < this.blockLevelsNumber; i++) {
-                        if (Math.random() > 0.8) {
+                        if (Math.random() > 0.75) {
                             lives++;
                         }
                     }

@@ -41,7 +41,8 @@ export class VariableTimeStepVersionComponent implements OnInit {
             this.paddle.horizontalCoord -= 30;
         }
     }
-
+    
+    //TODO: find a way to push this on a background thread without using timeouts
     gameLoop(lastTime: number) {
         setTimeout(() => {
             let currentTime = Date.now();
