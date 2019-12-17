@@ -34,11 +34,13 @@ export class VariableTimeStepVersionComponent implements OnInit {
         // arrow left
         if (event.keyCode === 39 && this.paddle.horizontalCoord < this.game.gameWidth - this.paddle.width) {
             this.paddle.horizontalCoord += 30;
+            this.paddle.updateLimits();
         }
 
         // arrow right
         if (event.keyCode === 37 && this.paddle.horizontalCoord > 0) {
             this.paddle.horizontalCoord -= 30;
+            this.paddle.updateLimits();
         }
     }
     
@@ -48,7 +50,7 @@ export class VariableTimeStepVersionComponent implements OnInit {
             let currentTime = Date.now();
             let ellapsed = currentTime - lastTime;
 
-            this.game = this.gameService.moveBall(this.game, this.paddle, ellapsed);
+            this.game = this.gameService.updateState(this.game, this.paddle, ellapsed);
 
             if (!this.game.endingMessage) {
                 this.gameLoop(currentTime);

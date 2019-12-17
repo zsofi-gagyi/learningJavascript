@@ -1,6 +1,6 @@
 import { Box } from './box';
 
-export class Block extends Box {
+export class Block extends Box implements Box {
 
     lives: number;
 
