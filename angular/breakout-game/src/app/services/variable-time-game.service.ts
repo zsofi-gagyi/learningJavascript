@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Game } from '../models/game';
 import { Box } from '../models/box';
 import { Ball } from '../models/ball';
-import { Block } from '../models/block';
+import { BoxWithLives } from '../models/boxWithLives';
 import { intersection, LineSegment, Point } from './intersection-detector.service';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class VariableTimeGameService {
             box.limits.left <= ball.limits.right;
     }
 
-    reflectBallFromBlocksIfTouchingOrCrossed(ball: Ball, blocks: Block[]) {
+    reflectBallFromBlocksIfTouchingOrCrossed(ball: Ball, blocks: BoxWithLives[]) {
 
         let touchedBlocks = blocks.filter(block => this.boxTouchesBall(block, ball));
 

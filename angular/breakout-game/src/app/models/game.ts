@@ -1,5 +1,5 @@
 import { Box } from './box';
-import { Block } from './block';
+import { BoxWithLives } from './boxWithLives';
 import { Ball } from './ball';
 
 export class Game {
@@ -7,7 +7,7 @@ export class Game {
     gameWidth: number;
     gameHeight: number;
 
-    blocks: Block[];
+    blocks: BoxWithLives[];
     blockLevelsNumber: number;
     levelColors: string[];
 
@@ -31,8 +31,8 @@ export class Game {
         this.ball = new Ball(480, 520, 25, 25, -5 / speedCoefficient, -5 / speedCoefficient);
     }
 
-    createBlocks(): Block[] {
-        let blocks = new Array<Block>();
+    createBlocks(): BoxWithLives[] {
+        let blocks = new Array<BoxWithLives>();
         let startingHorizontalCoordonate = 10; 
         let startingVerticalCoordonate = 10; 
 
@@ -48,7 +48,7 @@ export class Game {
                             lives++;
                         }
                     }
-                    let newBlock = new Block(x, y, blockWidth, blockHeight, lives);
+                    let newBlock = new BoxWithLives(x, y, blockWidth, blockHeight, lives);
                     blocks.push(newBlock);
                 }
             }
