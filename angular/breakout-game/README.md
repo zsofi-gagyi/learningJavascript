@@ -1,4 +1,5 @@
-<h3>Breakout clone</h3>
+<h1>Breakout clone</h1>
+<h3>Try it <a href="https://zsofi-gagyi.github.io/learningJavascript/">here</a></h3>
 
 Based on the Breakout arcade game from 1976 (see on <a href="https://en.wikipedia.org/wiki/Breakout_clone">wikipedia</a>).
 
