@@ -18,7 +18,7 @@ export class VariableTimeGameService {
       this.lineSegmentsDoIntersect = intersection;
     }
 
-    updateState(game: Game, paddle: Box, time: number): Game {
+    updateState(game: Game, paddle: Box, time: number) {
         this.moveBallBy(game.ball,
             game.ball.horizontalMovement * time,
             game.ball.verticalMovement * time);
@@ -31,8 +31,6 @@ export class VariableTimeGameService {
         this.reflectBallFromWallsIfTouchingOrCrossed(game);
 
         this.checkIfGameIsOver(game);
-
-        return game;
     }
 
     moveBallBy(ball: Ball, horizontalMovement: number, verticalMovement: number) {

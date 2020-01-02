@@ -43,7 +43,7 @@ export class FixedTimeStepVersionComponent implements OnInit {
     timeout(time: number) {
         setTimeout(() => {
             let start = Date.now();
-            this.game = this.gameService.moveBall(this.game, this.paddle);
+            this.gameService.updateState(this.game, this.paddle);
 
             if (!this.game.endingMessage) {
                 let end = Date.now();

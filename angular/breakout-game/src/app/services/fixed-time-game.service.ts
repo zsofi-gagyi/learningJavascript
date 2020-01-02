@@ -10,7 +10,7 @@ export class FixedTimeGameService {
 
     constructor() { }
 
-    moveBall(game: Game, paddle: Box): Game {
+    updateState(game: Game, paddle: Box) {
         this.reflectBallFromPaddleIfTouching(game, paddle);
         this.reflectBallFromBlocksIfTouching(game);
         this.reflectBallFromWallsIfTouching(game);
@@ -18,8 +18,6 @@ export class FixedTimeGameService {
         this.updateBallPositionAndLimits(game);
  
         this.checkIfGameIsOver(game);
-
-        return game;
     }
 
     reflectBallFromPaddleIfTouching(game: Game, paddle: Box) {

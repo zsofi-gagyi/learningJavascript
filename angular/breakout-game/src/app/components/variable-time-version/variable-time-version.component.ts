@@ -50,7 +50,7 @@ export class VariableTimeStepVersionComponent implements OnInit {
             let currentTime = Date.now();
             let ellapsed = currentTime - lastTime;
 
-            this.game = this.gameService.updateState(this.game, this.paddle, ellapsed);
+            this.gameService.updateState(this.game, this.paddle, ellapsed);
 
             if (!this.game.endingMessage) {
                 this.gameLoop(currentTime);
